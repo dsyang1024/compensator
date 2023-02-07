@@ -14,8 +14,11 @@ def make_graph(title, xtitle, xlist, y1title, y1list, y2title, y2list):
 
     import pandas as pd
     import seaborn as sns
-    import numpy as np
     import matplotlib.pyplot as plt
+    sns.set_style('white')
+    plt.rcParams['figure.figsize'] = 15,5
+    plt.grid(color='lightgrey',linewidth=0.5,axis='both',alpha=0.5)
+
     # setting data 1 (y1)
     dfy1 = pd.DataFrame({xtitle: xlist,
                         y1title: y1list,
@@ -26,20 +29,20 @@ def make_graph(title, xtitle, xlist, y1title, y1list, y2title, y2list):
                     })
     ax1 = plt.subplot()
     ax2 = ax1.twinx()
-    sns.lineplot(data=dfy1, x=xtitle, y=y1title, ax=ax1).set(title = y1title)
-    sns.lineplot(data=dfy2, x=xtitle, y=y2title, color='r', ax=ax2)
     ax2.tick_params(axis='y', colors='red')
+    sns.lineplot(data=dfy1, x=xtitle, y=y1title, ax=ax1).set(title = y1title)
+    sns.lineplot(data=dfy2, x=xtitle, y=y2title, color='salmon',ax=ax2)
     plt.show()
 
 
 
-
+import numpy as np
 title = 'test'
 xtitle = 'Date'
-xlist = [1,2,3,4,5,6,7,8,9,10]
+xlist = [i for i in range(200)]
 y1title = 'ILA level (m)'
-y1list = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+y1list = np.random.rand(200)
 y2title = 'Baro pressure (kPa)'
-y2list = [1.0,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1]
+y2list = np.random.rand(200)
 
 make_graph(title, xtitle, xlist, y1title, y1list, y2title, y2list)
