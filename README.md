@@ -11,6 +11,7 @@ this project is consisted with the 5 parts.
 1. keep the barologger data
 2. Download Purdue airport barologger data(pressure)
 3. Update barologger
+    - If they have difference over certain range, calibrate the field barologger
 4. Compensate the data using barologger
-4.1 Update the existing logger data (in one file)
+    - Update the existing level logger data (in one file)
 5. Make graph for all of loggers
