@@ -1,5 +1,13 @@
+'''
+This library is including multiple functions for compensation
+1. graphy : draw graph for the data
+2. comp : compensation function for the loggers using baro
+3. baro_crawler : crawling baro data from the purdue airport station
+4. baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
+'''
 
-def make_graph(title, xtitle, xlist, y1title, y1list, y2title, y2list):
+
+def graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list):
     '''
     this script is making graph for the processed data from main.py
     users should make sure that list variable should contain 'only' float format numbers not string
@@ -15,6 +23,9 @@ def make_graph(title, xtitle, xlist, y1title, y1list, y2title, y2list):
     import pandas as pd
     import seaborn as sns
     import matplotlib.pyplot as plt
+    from datetime import datetime
+    
+    # styling the graph
     sns.set_style('white')
     plt.rcParams['figure.figsize'] = 15,5
     plt.grid(color='lightgrey',linewidth=0.5,axis='both',alpha=0.5)
@@ -27,13 +38,20 @@ def make_graph(title, xtitle, xlist, y1title, y1list, y2title, y2list):
     dfy2 = pd.DataFrame({xtitle: xlist,
                         y2title: y2list,
                     })
-    ax1 = plt.subplot()
-    ax2 = ax1.twinx()
-    ax2.tick_params(axis='y', colors='red')
+    
+    # sub setting for the graph
+    ax1 = plt.subplot() # plotting two set of graph
+    ax2 = ax1.twinx() # make two y-axis graph
+    ax2.tick_params(axis='y', colors='red') # for 2nd y-axis
     sns.lineplot(data=dfy1, x=xtitle, y=y1title, ax=ax1).set(title = y1title)
     sns.lineplot(data=dfy2, x=xtitle, y=y2title, color='salmon',ax=ax2)
-    plt.show()
+    now = datetime.now() # to make filename
+    plt.savefig(now.strftime('%Y-%m-%d')+'_'+y1title+'.png') # saving figure
+    plt.show() # show graph
 
+
+def comp():
+    print('this is function [comp]')
 
 
 import numpy as np
@@ -45,4 +63,4 @@ y1list = np.random.rand(200)
 y2title = 'Baro pressure (kPa)'
 y2list = np.random.rand(200)
 
-make_graph(title, xtitle, xlist, y1title, y1list, y2title, y2list)
+graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list)
