@@ -18,6 +18,8 @@ def graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list):
     y2 : variable y2 (right side, barometer)
     title : title of each axis
     list : list of the variable
+    # todo
+    1. x axis should be date format
     '''
 
     import pandas as pd
@@ -46,7 +48,7 @@ def graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list):
     sns.lineplot(data=dfy1, x=xtitle, y=y1title, ax=ax1).set(title = y1title)
     sns.lineplot(data=dfy2, x=xtitle, y=y2title, color='salmon',ax=ax2)
     now = datetime.now() # to make filename
-    plt.savefig(now.strftime('%Y-%m-%d')+'_'+y1title+'.png') # saving figure
+    plt.savefig(now.strftime('%Y-%m-%d')+'_'+y1title+'.png',dpi=500) # saving figure
     plt.show() # show graph
 
 
