@@ -53,7 +53,12 @@ def graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list):
 
 
 def comp():
+    # Need to read setup file for compensation.
+    # this compensation setting file inclues depth of the logger in the field
     print('this is function [comp]')
+
+def history():
+
 
 
 import numpy as np
