@@ -9,18 +9,18 @@ This library is including multiple functions for compensation
 '''
 
 
-def graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list):
+def graphy(title, indata, xvar, y1var, y2var):
     '''
     this function is making graph for the processed data from main.py
     users should make sure that list variable should contain 'only' float format numbers not string
     if you are using this function as part of compensator, you don't need to worry about
     ** this function is using pandas, seaborn, matplotlib
     title : title for the graph, should be string
-    x : variable x (x axis, usually timeseries)
-    y1 : variable y1 (left side), this will be the graph title
-    y2 : variable y2 (right side, barometer)
-    title : title of each axis
-    list : list of the variable
+    indata : pandas dataframe with data
+    xvar : variable x (x axis, usually datetime)
+    y1var : variable y1 (left side), this will be the graph title, Level(m)
+    y2var : variable y2 (right side, barometer), Temp(C)
+    
     # todo
     1. x axis should be date format
     '''
@@ -34,22 +34,15 @@ def graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list):
     sns.set_style('white')
     plt.rcParams['figure.figsize'] = 15,5
     plt.grid(color='lightgrey',linewidth=0.5,axis='both',alpha=0.5)
-
-    # setting data 1 (y1)
-    dfy1 = pd.DataFrame({xtitle: xlist,
-                        y1title: y1list,
-                    })
-    # setting data 2 (y2)
-    dfy2 = pd.DataFrame({xtitle: xlist,
-                        y2title: y2list,
-                    })
     
     # sub setting for the graph
     ax1 = plt.subplot() # plotting two set of graph
     ax2 = ax1.twinx() # make two y-axis graph
     ax2.tick_params(axis='y', colors='red') # for 2nd y-axis
-    sns.lineplot(data=dfy1, x=xtitle, y=y1title, ax=ax1).set(title = y1title)
-    sns.lineplot(data=dfy2, x=xtitle, y=y2title, color='salmon',ax=ax2)
+    sns.lineplot(data=indata, x=xvar, y=y1var, ax=ax1, label=y1var).set(title = y1var)
+    sns.lineplot(data=indata, x=xvar, y=y2var, color='salmon',ax=ax2, label=y2var)
+    ax1.legend(labels=[y1var], loc=1)
+    ax2.legend(labels=[y2var], loc=2)
     now = datetime.now() # to make filename
     plt.savefig(now.strftime('%Y-%m-%d')+'_'+y1title+'.png',dpi=500) # saving figure
     plt.show() # show graph
@@ -70,6 +63,8 @@ def history():
     all the data (.csv) should be contained in the /data/ directory
     the data will be collected depends on the monitoring station, this function OUT, ILA, ILB, CEN
     return value of function is list of the updated data file
+    == Output ==
+    (return list) list of files need to be update for each station
     '''
     import os
 
@@ -157,40 +152,39 @@ def readdata(finname, foutname):
     import pandas as pd
 
     # step 1. read the file
-    data = pd.read_csv('data/'+finname, encoding='cp949',sep=',',names=['datetime','time','ms','level','temp'],skiprows=12)  # this encoding and separation is following solinst format
+    data = pd.read_csv('data/'+finname, encoding='cp949',sep=',',names=['Datetime','time','ms','Level(m)','Temp(C)'],skiprows=12)  # this encoding and separation is following solinst format
     
+
     # step 2. change the format of data and time creating one column
-    data['datetime'] = pd.to_datetime(data['datetime'],format='%m/%d/%Y') # changed date column to the datetime format of the pandas for sorting
-    data['time'] = pd.to_datetime(data['time'],format='%H:%M:%S %p') # changed date column to the datetime format of the pandas for sorting
-    
-    
-
-    
-    # todo this is the problem 날짜랑 시간 합치는게 제대로 안되는 문제가 있어서 수정이 필요함.... 검색해서 방법을 찾아봐야함.
-    data['datetime'] = pd.to_datetime(data['datetime']+' '+data['time']) # changed date column to the datetime format of the pandas for sorting
-    
-    
-    
-    
-    
+    data['Datetime'] = pd.to_datetime(data['Datetime']+' '+data['time']) # changed date column to the datetime format of the pandas for sorting
+    data['Datetime'] = pd.to_datetime(data['Datetime'],format='%m/%d/%Y %H:%M:%S %p') # changed date column to the datetime format of the pandas for sorting
     del data['time'] # deleted time column since datatime column is containing all of the info needed
-    print(data)
+    # print(data)
     
-    # step 3. read existing data from foutname
-    exdata = pd.read_csv(foutname, encoding='cp949',sep=',',names=['datetime','ms','level','temp'],skiprows=1)  # this encoding and separation is following solinst format
-    exdata['datetime'] = pd.to_datetime(exdata['datetime'],format='%Y-%m-%d %H:%M:%S') # changed date column to the datetime format of the pandas for sorting
-    print(exdata)
-    # step 4. add updated data to the integrated file with sorting data according to datetime column
-    mergedata = pd.concat([exdata,data])
-    print('\n\n')
-    mergedata.sort_values(by='datetime', inplace=True)
-    print (mergedata)
 
+    # step 3. read existing data from foutname
+    exdata = pd.read_csv(foutname, encoding='cp949',sep=',',names=['Datetime','ms','Level(m)','Temp(C)'],skiprows=1)  # this encoding and separation is following solinst format
+    exdata['Datetime'] = pd.to_datetime(exdata['Datetime'],format='%Y-%m-%d %H:%M:%S') # changed date column to the datetime format of the pandas for sorting
+    # print(exdata)
+
+
+    # step 4. add updated data to the integrated file with sorting data according to datetime column
+    mergedata = pd.concat([data,exdata])
+    print('\nData merged and sorted\n')
+    mergedata.sort_values(by='Datetime', inplace=True)
+
+    # step 5. turn pandas data frame into integrated file
+    mergedata.to_csv('OUT_integrated_1.csv', index=False)
+
+    return mergedata
 
 
 
 
 import numpy as np
+import pandas as df
+import matplotlib.pyplot as plt
+
 title = 'test'
 xtitle = 'Date'
 xlist = [i for i in range(200)]
@@ -199,10 +193,18 @@ y1list = np.random.rand(200)
 y2title = 'Baro pressure (kPa)'
 y2list = np.random.rand(200)
 
-# graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list)
+
 updatelist =  history()
 print('\n\n')
+
+
 # testing readdata function
 testin = updatelist[0][0]
 testout = 'OUT_integrated.csv'
-readdata(testin, testout)
+data = readdata(testin, testout)
+indexlist = data.columns.to_list()
+print(indexlist)
+data.plot(x='Datetime',y='Level(m)')
+plt.show()
+
+graphy('TEST GRAPH', data, 'Datetime', 'Level(m)', 'Temp(C)')
