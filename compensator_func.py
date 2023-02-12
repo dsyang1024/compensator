@@ -8,7 +8,7 @@ This library is including multiple functions for compensation
 6. baro_crawler : crawling baro data from the purdue airport station
 7. baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
 8. *oldetector : outlier detector for various situation
-9. set_read : this file will read environmental variables for the compensation
+9. *set_read : this file will read environmental variables for the compensation
 
 ===== System Flow =====
 history / set_read
@@ -33,7 +33,7 @@ def graphy(title, indata, xvar, y1var, y2var):
     y2var : variable y2 (right side, barometer), Temp(C)
     
     # todo
-    1. x axis should be date format
+    1. get the name of station outside the function and make it as title variable
     '''
 
     import pandas as pd
@@ -55,7 +55,7 @@ def graphy(title, indata, xvar, y1var, y2var):
     ax1.legend(labels=[y1var], loc=1)
     ax2.legend(labels=[y2var], loc=2)
     now = datetime.now() # to make filename
-    plt.savefig(now.strftime('%Y-%m-%d')+'_'+y1title+'.png',dpi=500) # saving figure
+    plt.savefig(now.strftime('%Y-%m-%d')+'_'+title+'.png',dpi=500) # saving figure
     plt.show() # show graph
 
 
@@ -209,11 +209,14 @@ def oldetector(indata):
     import seaborn as sns
     import matplotlib.pyplot as plt
     import pandas as pd
-
+    '''
+    # showing graph with outliers
     figure, axes = plt.subplots(2,1, figsize=(12,5))
     sns.lineplot(ax=axes[0], x=indata['Datetime'], y=indata['Level(m)'])
     sns.boxplot(ax = axes[1], x=indata['Level(m)'])
     plt.show()
+    '''
+    print('\n====== Stats for data =====')
     print(indata.describe())
 
     # outlier detection is only for level and ATM
@@ -223,14 +226,15 @@ def oldetector(indata):
         q3=indata['Level(m)'].quantile(0.75)
         IQR=q3-q1
         outliers = indata[((indata['Level(m)']<(q1-1.5*IQR)) | (indata['Level(m)']>(q3+1.5*IQR)))]
-        print('\n === Outlier Detected for Level(m)')
+        print('\n===== Outlier Detected for Level(m) =====')
         print(outliers)
+        print('...',len(outliers),' outliers detected\n')
         rmlist = outliers.index.to_list()
-        print(rmlist)
+        
         for i in rmlist:
             outdata = indata.drop(i)
-        figure, axes = plt.subplots(2,1, figsize=(12,5))
-        sns.lineplot(ax = axes[0], x=outdata['Datetime'], y=outdata['Level(m)'])
+        figure, axes = plt.subplots(2,1, figsize=(12,8))
+        sns.lineplot(ax = axes[0], x=outdata['Datetime'], y=outdata['Level(m)']).set(title='Outliers Removed')
         sns.boxplot(ax = axes[1], x=outdata['Level(m)'])
         plt.show()
     
@@ -245,6 +249,18 @@ def set_read():
     ht :: height of each loggers in metric unit(m)
     OUT, ILA, ILB, CEN
     '''
+    with open('setting.comp','r') as f:
+        htvars = f.readlines()[2]
+        htvars = htvars.split(',')
+        htvars = [float(i) for i in htvars]
+    print('===== Comp variables imported =====\n')
+
+    return(htvars)
+
+
+
+
+
 
 
 import numpy as np
@@ -258,8 +274,11 @@ updatelist =  history()
 testin = updatelist[0][0]
 testout = 'OUT_integrated.csv'
 data = readdata(testin, testout)
-# graphy('TEST GRAPH', data, 'Datetime', 'Level(m)', 'Temp(C)')
+graphy('TEST GRAPH', data, 'Datetime', 'Level(m)', 'Temp(C)')
 
 # testing oldector
 data = oldetector(data)
 indexlist = data.columns.to_list() # make colums as variable (use for graphy)
+
+# testing set_read
+htvars = set_read()
