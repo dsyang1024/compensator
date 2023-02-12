@@ -1,11 +1,22 @@
 '''
 This library is including multiple functions for compensation
-1. graphy : draw graph for the data
-2. history : update history.log file for future management of the data files
-3. readdata : read data file and write it to the integrated file
-3. comp : compensation function for the loggers using baro
-4. baro_crawler : crawling baro data from the purdue airport station
-5. baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
+1. *graphy : draw graph for the data from pandas dataframe
+2. *history : update history.log file for future management of the data files
+3. *readdata : read data file, make it as dataframe format. 
+4. intwrite : read all the compensated data, write it to the integrated file
+5. == comp : compensation function for the loggers using baro
+6. baro_crawler : crawling baro data from the purdue airport station
+7. baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
+8. *oldetector : outlier detector for various situation
+9. set_read : this file will read environmental variables for the compensation
+
+===== System Flow =====
+history / set_read
+Baro_crawler >> baro_cali
+readdata >> oldetector
+comp >> graphy
+intwrite
+
 '''
 
 
@@ -52,6 +63,9 @@ def comp():
     '''
     need to read setup file for compensation.
     this compensation setting file inclues depth of the logger in the field
+    에어포트 vs out/ila/ilb/cen 비교해서 meteric difference를 찾아가는 방식...?
+    이건 확인이 더 필요할 듯
+    comp이후 데이터 프레임은 뒤에 ATM(kPa)가 추가 되어야함
     ''' 
     print('this is function [comp]')
 
@@ -161,7 +175,7 @@ def readdata(finname, foutname):
     del data['time'] # deleted time column since datatime column is containing all of the info needed
     # print(data)
     
-
+    '''
     # step 3. read existing data from foutname
     exdata = pd.read_csv(foutname, encoding='cp949',sep=',',names=['Datetime','ms','Level(m)','Temp(C)'],skiprows=1)  # this encoding and separation is following solinst format
     exdata['Datetime'] = pd.to_datetime(exdata['Datetime'],format='%Y-%m-%d %H:%M:%S') # changed date column to the datetime format of the pandas for sorting
@@ -175,36 +189,77 @@ def readdata(finname, foutname):
 
     # step 5. turn pandas data frame into integrated file
     mergedata.to_csv('OUT_integrated_1.csv', index=False)
+    '''
 
-    return mergedata
+    return data
 
 
+def oldetector(indata):
+    '''
+    this function is designed to detect outlier in the data file list
+    for this, this fucntion is analyzing two types of outlier
+        1. global outlier
+        this is an outlier that exist out of min-max range of the data
+        2. contextual outliers
+        this is an outlier that exist within min-max range but sudden increase or decrease of the data
+    all of this outliers can be easily found through plotting the graph
+    after detecting outlier, the data will be removed
+    '''
+
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    import pandas as pd
+
+    figure, axes = plt.subplots(2,1, figsize=(12,5))
+    sns.lineplot(ax=axes[0], x=indata['Datetime'], y=indata['Level(m)'])
+    sns.boxplot(ax = axes[1], x=indata['Level(m)'])
+    plt.show()
+    print(indata.describe())
+
+    # outlier detection is only for level and ATM
+    indexlist = data.columns.to_list()
+    if 'Level(m)' in indexlist :
+        q1=indata['Level(m)'].quantile(0.25)
+        q3=indata['Level(m)'].quantile(0.75)
+        IQR=q3-q1
+        outliers = indata[((indata['Level(m)']<(q1-1.5*IQR)) | (indata['Level(m)']>(q3+1.5*IQR)))]
+        print('\n === Outlier Detected for Level(m)')
+        print(outliers)
+        rmlist = outliers.index.to_list()
+        print(rmlist)
+        for i in rmlist:
+            outdata = indata.drop(i)
+        figure, axes = plt.subplots(2,1, figsize=(12,5))
+        sns.lineplot(ax = axes[0], x=outdata['Datetime'], y=outdata['Level(m)'])
+        sns.boxplot(ax = axes[1], x=outdata['Level(m)'])
+        plt.show()
+    
+    # return dataframe with outliers removed
+    return outdata
+
+
+def set_read():
+    '''
+    this function is importing variable for compensation which refers height of the logger from the bottom(location of the logger)
+    === input file is the setting file (setting.comp) and it contains variables below ===
+    ht :: height of each loggers in metric unit(m)
+    OUT, ILA, ILB, CEN
+    '''
 
 
 import numpy as np
 import pandas as df
 import matplotlib.pyplot as plt
 
-title = 'test'
-xtitle = 'Date'
-xlist = [i for i in range(200)]
-y1title = 'ILA level (m)'
-y1list = np.random.rand(200)
-y2title = 'Baro pressure (kPa)'
-y2list = np.random.rand(200)
-
-
+# testing history
 updatelist =  history()
-print('\n\n')
 
-
-# testing readdata function
+# testing readdata and graphy
 testin = updatelist[0][0]
 testout = 'OUT_integrated.csv'
 data = readdata(testin, testout)
-indexlist = data.columns.to_list()
-print(indexlist)
-data.plot(x='Datetime',y='Level(m)')
-plt.show()
+# graphy('TEST GRAPH', data, 'Datetime', 'Level(m)', 'Temp(C)')
 
-graphy('TEST GRAPH', data, 'Datetime', 'Level(m)', 'Temp(C)')
+# testing oldector
+data = oldetector(data)
+indexlist = data.columns.to_list() # make colums as variable (use for graphy)
