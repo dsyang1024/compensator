@@ -1,10 +1,11 @@
 '''
 This library is including multiple functions for compensation
 1. graphy : draw graph for the data
-2. comp : compensation function for the loggers using baro
-3. baro_crawler : crawling baro data from the purdue airport station
-4. baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
-5. history
+2. history : update history.log file for future management of the data files
+3. readdata : read data file and write it to the integrated file
+3. comp : compensation function for the loggers using baro
+4. baro_crawler : crawling baro data from the purdue airport station
+5. baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
 '''
 
 
@@ -13,6 +14,7 @@ def graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list):
     this function is making graph for the processed data from main.py
     users should make sure that list variable should contain 'only' float format numbers not string
     if you are using this function as part of compensator, you don't need to worry about
+    ** this function is using pandas, seaborn, matplotlib
     title : title for the graph, should be string
     x : variable x (x axis, usually timeseries)
     y1 : variable y1 (left side), this will be the graph title
@@ -60,14 +62,18 @@ def comp():
     ''' 
     print('this is function [comp]')
 
+
 def history():
     '''
     this function make history log file with file used for the compensation
     if the file read, it will be recorded to the history.log file in text format
     all the data (.csv) should be contained in the /data/ directory
     the data will be collected depends on the monitoring station, this function OUT, ILA, ILB, CEN
+    return value of function is list of the updated data file
     '''
     import os
+
+    # step 1. import all the data in the data folder
     data_list = os.listdir('data/')
     # print(data_list)
     OUTfile = [i for i in data_list if 'OUT' in i]
@@ -80,6 +86,7 @@ def history():
     # print(CENfile)
 
 
+    # step 2. check the existance of the new file using history log
     # Read history file, if it does not exist, make a new one
     try:
         with open('history.log','r') as fhistory:
@@ -111,7 +118,7 @@ def history():
     print('\n\n::: Updated Data status :::','\nOUT :: ',len(OUTfile),'\nILA :: ',len(ILAfile),'\nILB :: ',len(ILBfile),'\nCEN :: ',len(CENfile))
 
 
-
+    # step 3. make a new history log including updated file list
     # merge old list and new list
     newOUTfile = oldOUTfile + OUTfile
     newOUTfile.sort()
@@ -122,7 +129,8 @@ def history():
     newCENfile = oldCENfile + CENfile
     newCENfile.sort()
 
-
+    '''
+    # important! this line commented for testing
     with open('history.log','w') as fhistory:
         for i in [newOUTfile, newILAfile, newILBfile, newCENfile]:
             for r in i:
@@ -130,6 +138,55 @@ def history():
                 fhistory.write('\n')
             fhistory.write('\n\n')
     print('history log file updated')
+    '''
+    return(OUTfile, ILAfile, ILBfile, CENfile)
+
+
+def readdata(finname, foutname):
+    '''
+    this function read data file and write into the integrated file
+    the integrated file will be updated
+    additionally, this file will checking if there is any missing date within the data
+    ** this function is using pandas
+    == input ==
+    finname : input file name (each updated data file)
+    foutname : the name of the integrated file
+    '''
+
+    from datetime import datetime
+    import pandas as pd
+
+    # step 1. read the file
+    data = pd.read_csv('data/'+finname, encoding='cp949',sep=',',names=['datetime','time','ms','level','temp'],skiprows=12)  # this encoding and separation is following solinst format
+    
+    # step 2. change the format of data and time creating one column
+    data['datetime'] = pd.to_datetime(data['datetime'],format='%m/%d/%Y') # changed date column to the datetime format of the pandas for sorting
+    data['time'] = pd.to_datetime(data['time'],format='%H:%M:%S %p') # changed date column to the datetime format of the pandas for sorting
+    
+    
+
+    
+    # todo this is the problem 날짜랑 시간 합치는게 제대로 안되는 문제가 있어서 수정이 필요함.... 검색해서 방법을 찾아봐야함.
+    data['datetime'] = pd.to_datetime(data['datetime']+' '+data['time']) # changed date column to the datetime format of the pandas for sorting
+    
+    
+    
+    
+    
+    del data['time'] # deleted time column since datatime column is containing all of the info needed
+    print(data)
+    
+    # step 3. read existing data from foutname
+    exdata = pd.read_csv(foutname, encoding='cp949',sep=',',names=['datetime','ms','level','temp'],skiprows=1)  # this encoding and separation is following solinst format
+    exdata['datetime'] = pd.to_datetime(exdata['datetime'],format='%Y-%m-%d %H:%M:%S') # changed date column to the datetime format of the pandas for sorting
+    print(exdata)
+    # step 4. add updated data to the integrated file with sorting data according to datetime column
+    mergedata = pd.concat([exdata,data])
+    print('\n\n')
+    mergedata.sort_values(by='datetime', inplace=True)
+    print (mergedata)
+
+
 
 
 
@@ -143,4 +200,9 @@ y2title = 'Baro pressure (kPa)'
 y2list = np.random.rand(200)
 
 # graphy(title, xtitle, xlist, y1title, y1list, y2title, y2list)
-history()
+updatelist =  history()
+print('\n\n')
+# testing readdata function
+testin = updatelist[0][0]
+testout = 'OUT_integrated.csv'
+readdata(testin, testout)
