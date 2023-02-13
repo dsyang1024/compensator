@@ -1,14 +1,16 @@
 '''
 This library is including multiple functions for compensation
-1. *graphy : draw graph for the data from pandas dataframe
-2. *history : update history.log file for future management of the data files
-3. *readdata : read data file, make it as dataframe format. 
-4. intwrite : read all the compensated data, write it to the integrated file
+* done // *= needs to be modified // == needs more idea and plan
+1. *= graphy : draw graph for the data from pandas dataframe
+2. *  history : update history.log file for future management of the data files
+3. *= readdata : read data file, make it as dataframe format. 
+4. *= intwrite : read all the compensated data, write it to the integrated file
 5. == comp : compensation function for the loggers using baro
-6. baro_crawler : crawling baro data from the purdue airport station
-7. baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
-8. *oldetector : outlier detector for various situation
-9. *set_read : this file will read environmental variables for the compensation
+             from this function, the baro data(ATM) will be added to the dataframe of the level logger
+6. == baro_crawler : crawling baro data from the purdue airport station
+7. == baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
+8. *  oldetector : outlier detector for various situation
+9. *  set_read : this file will read environmental variables for the compensation
 
 ===== System Flow =====
 history / set_read
@@ -20,7 +22,7 @@ intwrite
 '''
 
 
-def graphy(title, indata, xvar, y1var, y2var):
+def graphy(finname, indata, xvar, y1var, y2var):
     '''
     this function is making graph for the processed data from main.py
     users should make sure that list variable should contain 'only' float format numbers not string
@@ -32,8 +34,8 @@ def graphy(title, indata, xvar, y1var, y2var):
     y1var : variable y1 (left side), this will be the graph title, Level(m)
     y2var : variable y2 (right side, barometer), Temp(C)
     
-    # todo
-    1. get the name of station outside the function and make it as title variable
+    # todo : get the name of station outside the function and make it as title variable
+    # todo : antoher graph method if finname is baro
     '''
 
     import pandas as pd
@@ -41,6 +43,18 @@ def graphy(title, indata, xvar, y1var, y2var):
     import matplotlib.pyplot as plt
     from datetime import datetime
     
+    # confirm title for the graph
+    if 'OUT' in finname:
+        title = 'ACRE outlet water level'
+    elif 'ILA' in finname:
+        title = 'ACRE inlet A water level'
+    elif 'ILB' in finname:
+        title = 'ACRE inlet B water level'
+    elif 'CEN' in finname:
+        title = 'ACRE center water level'
+    else:
+        print('===== Check the file name =====\n')
+
     # styling the graph
     sns.set_style('white')
     plt.rcParams['figure.figsize'] = 15,5
@@ -50,7 +64,7 @@ def graphy(title, indata, xvar, y1var, y2var):
     ax1 = plt.subplot() # plotting two set of graph
     ax2 = ax1.twinx() # make two y-axis graph
     ax2.tick_params(axis='y', colors='red') # for 2nd y-axis
-    sns.lineplot(data=indata, x=xvar, y=y1var, ax=ax1, label=y1var).set(title = y1var)
+    sns.lineplot(data=indata, x=xvar, y=y1var, ax=ax1, label=y1var).set(title = title)
     sns.lineplot(data=indata, x=xvar, y=y2var, color='salmon',ax=ax2, label=y2var)
     ax1.legend(labels=[y1var], loc=1)
     ax2.legend(labels=[y2var], loc=2)
@@ -151,7 +165,7 @@ def history():
     return(OUTfile, ILAfile, ILBfile, CENfile)
 
 
-def readdata(finname, foutname):
+def readdata(finname):
     '''
     this function read data file and write into the integrated file
     the integrated file will be updated
@@ -159,7 +173,8 @@ def readdata(finname, foutname):
     ** this function is using pandas
     == input ==
     finname : input file name (each updated data file)
-    foutname : the name of the integrated file
+
+    # todo : another reading method in case of the baro
     '''
 
     from datetime import datetime
@@ -175,22 +190,6 @@ def readdata(finname, foutname):
     del data['time'] # deleted time column since datatime column is containing all of the info needed
     # print(data)
     
-    '''
-    # step 3. read existing data from foutname
-    exdata = pd.read_csv(foutname, encoding='cp949',sep=',',names=['Datetime','ms','Level(m)','Temp(C)'],skiprows=1)  # this encoding and separation is following solinst format
-    exdata['Datetime'] = pd.to_datetime(exdata['Datetime'],format='%Y-%m-%d %H:%M:%S') # changed date column to the datetime format of the pandas for sorting
-    # print(exdata)
-
-
-    # step 4. add updated data to the integrated file with sorting data according to datetime column
-    mergedata = pd.concat([data,exdata])
-    print('\nData merged and sorted\n')
-    mergedata.sort_values(by='Datetime', inplace=True)
-
-    # step 5. turn pandas data frame into integrated file
-    mergedata.to_csv('OUT_integrated_1.csv', index=False)
-    '''
-
     return data
 
 
@@ -258,27 +257,100 @@ def set_read():
     return(htvars)
 
 
+def inwrite(finname, indata):
+    '''
+    this funcion is making integrated file with the input data
+    first, 'indata' is the dataframe with outliers removed. (returned from oldetector)
+    second, this will read the file name of the station according to the input file name(finname)
+        this 'finname' is same variable with one goes into readdate() function
+        and according to the finname var, which station it belongs to will be determined(foutname)
+        foutname is local variable for this function and will not be shared with other functions
+    third, the pandas dataframe will be written in the csv form with named 'foutname'
+
+    # todo : baro pressure should be in the integrated data
+    # todo : another reading method in case of the baro
+    # todo : find the closest time of the observation between logger and baro
+    reference: https://hyang2data.tistory.com/2
+    '''
+
+    import os
+
+    # step 1. confirm foutname for writing result
+    if 'OUT' in finname:
+        foutname = 'OUT_integrated.csv'
+        print('===== File name is OUT_integrated.csv =====\n')
+    elif 'ILA' in finname:
+        foutname = 'ILA_integrated.csv'
+        print('===== File name is ILA_integrated.csv =====\n')
+    elif 'ILB' in finname:
+        foutname = 'ILB_integrated.csv'
+        print('===== File name is ILB_integrated.csv =====\n')
+    elif 'CEN' in finname:
+        foutname = 'CEN_integrated.csv'
+        print('===== File name is CEN_integrated.csv =====\n')
+    elif 'BARO' in finname:
+        foutname = 'BARO_integrated.csv'
+        print('===== File name is BARO_integrated.csv =====\n')
+    else:
+        print('===== Check the file name =====\n')
+
+    # in the case if foutname file not exist,
+    if os.path.isfile(foutname) == False:
+        with open(foutname, 'w') as f:
+            f.close()
+            print('=====',foutname, 'file is made =====')
+
+    # step 2. read existing data from foutname
+    exdata = pd.read_csv(foutname, encoding='cp949',sep=',',names=['Datetime','ms','Level(m)','Temp(C)'],skiprows=1)  # this encoding and separation is following solinst format
+    exdata['Datetime'] = pd.to_datetime(exdata['Datetime'],format='%Y-%m-%d %H:%M:%S') # changed date column to the datetime format of the pandas for sorting
+
+    # step 3. add updated data to the integrated file with sorting data according to datetime column
+    mergedata = pd.concat([indata,exdata])
+    print('\nData merged and sorted\n')
+    mergedata.sort_values(by='Datetime', inplace=True)
+    # step 3.1. delete duplicated rows in terms of 'datetime'
+    mergedata.drop_duplicates(['Datetime'])
+
+    # step 4. turn pandas data frame into integrated file
+    mergedata.to_csv('OUT_integrated_1.csv', index=False)
 
 
 
 
+# =====================================================================
+# 
+# Testing the functions
+# 
+# =====================================================================
+
+'''
+===== System Flow =====
+history / set_read
+Baro_crawler >> baro_cali
+readdata >> oldetector
+comp >> graphy
+intwrite
+'''
 
 import numpy as np
-import pandas as df
+import pandas as pd
 import matplotlib.pyplot as plt
 
 # testing history
 updatelist =  history()
 
+# testing set_read
+htvars = set_read()
+
 # testing readdata and graphy
 testin = updatelist[0][0]
-testout = 'OUT_integrated.csv'
-data = readdata(testin, testout)
+data = readdata(testin)
 
 # testing oldector
 data = oldetector(data)
 indexlist = data.columns.to_list() # make colums as variable (use for graphy)
-graphy('TEST GRAPH', data, 'Datetime', 'Level(m)', 'Temp(C)')
 
-# testing set_read
-htvars = set_read()
+graphy(testin, data, 'Datetime', 'Level(m)', 'Temp(C)')
+
+# testing inwrite
+inwrite(testin, data)
