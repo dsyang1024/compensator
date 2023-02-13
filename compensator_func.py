@@ -23,17 +23,21 @@ intwrite
 
 
 def graphy(finname, indata, xvar, y1var, y2var):
-    '''
-    this function is making graph for the processed data from main.py
-    users should make sure that list variable should contain 'only' float format numbers not string
-    if you are using this function as part of compensator, you don't need to worry about
-    ** this function is using pandas, seaborn, matplotlib
-    title : title for the graph, should be string
-    indata : pandas dataframe with data
-    xvar : variable x (x axis, usually datetime)
-    y1var : variable y1 (left side), this will be the graph title, Level(m)
-    y2var : variable y2 (right side, barometer), Temp(C)
+    '''_Summary_
+        this function is making graph for the processed data from main.py
+        users should make sure that list variable should contain 'only' float format numbers not string
+        if you are using this function as part of compensator, you don't need to worry about
+        ** this function is using pandas, seaborn, matplotlib
     
+    Args(*: input or output):
+        title(string) : title for the graph, should be string
+        indata(dataframe) : pandas dataframe with data
+        xvar(dataframe column name) : variable x (x axis, usually datetime)
+        y1var(dataframe column name) : variable y1 (left side), this will be the graph title, Level(m)
+        y2var(dataframe column name) : variable y2 (right side, barometer), Temp(C)
+    
+    Return: graph saved
+
     # todo : get the name of station outside the function and make it as title variable
     # todo : antoher graph method if finname is baro
     '''
@@ -85,14 +89,17 @@ def comp():
 
 
 def history():
-    '''
-    this function make history log file with file used for the compensation
-    if the file read, it will be recorded to the history.log file in text format
-    all the data (.csv) should be contained in the /data/ directory
-    the data will be collected depends on the monitoring station, this function OUT, ILA, ILB, CEN
-    return value of function is list of the updated data file
-    == Output ==
-    (return list) list of files need to be update for each station
+    '''_Summary_
+        this function make history log file with file used for the compensation
+        if the file read, it will be recorded to the history.log file in text format
+        all the data (.csv) should be contained in the /data/ directory
+        the data will be collected depends on the monitoring station, this function OUT, ILA, ILB, CEN
+        return value of function is list of the updated data file
+
+    Args(*: input or output):
+
+    Returns:
+         (OUTfile, ILAfile, ILBfile, CENfile)(list): list of files need to be update for each station
     '''
     import os
 
@@ -166,15 +173,18 @@ def history():
 
 
 def readdata(finname):
-    '''
+    '''_Summary_
     this function read data file and write into the integrated file
     the integrated file will be updated
     additionally, this file will checking if there is any missing date within the data
     ** this function is using pandas
-    == input ==
-    finname : input file name (each updated data file)
-
     # todo : another reading method in case of the baro
+    
+    Args(*: input or output):
+        *finname(string) : input file name (each updated data file)
+
+    Returns:
+        *data(dataframe) : dataframe from finname
     '''
 
     from datetime import datetime
@@ -194,15 +204,23 @@ def readdata(finname):
 
 
 def oldetector(indata):
-    '''
-    this function is designed to detect outlier in the data file list
-    for this, this fucntion is analyzing two types of outlier
-        1. global outlier
-        this is an outlier that exist out of min-max range of the data
-        2. contextual outliers
-        this is an outlier that exist within min-max range but sudden increase or decrease of the data
-    all of this outliers can be easily found through plotting the graph
-    after detecting outlier, the data will be removed
+    '''_Summary
+        this function is designed to detect outlier in the data file list
+        for this, this fucntion is analyzing two types of outlier
+            1. global outlier
+            this is an outlier that exist out of min-max range of the data
+            2. contextual outliers
+            this is an outlier that exist within min-max range but sudden increase or decrease of the data
+        all of this outliers can be easily found through plotting the graph
+        after detecting outlier, the data will be removed
+
+    Args(*: input or output):
+        indata(dataframe) : dataframe passed from readdata
+        indexlist(list) : headers of the dataframe
+        outliers(dataframe) : dataframe of the outliers
+
+    Returns:
+        outdata(dataframe) : dataframe with outliers removed from indata
     '''
 
     import seaborn as sns
@@ -242,11 +260,16 @@ def oldetector(indata):
 
 
 def set_read():
-    '''
-    this function is importing variable for compensation which refers height of the logger from the bottom(location of the logger)
-    === input file is the setting file (setting.comp) and it contains variables below ===
-    ht :: height of each loggers in metric unit(m)
-    OUT, ILA, ILB, CEN
+    '''_Summary_
+        this function is importing variable for compensation which refers height of the logger from the bottom(location of the logger)
+        === input file is the setting file (setting.comp) and it contains variables below ===
+
+    Args(*: input or output):
+        ht :: height of each loggers in metric unit(m)
+        OUT, ILA, ILB, CEN
+    
+    Returns:
+        htvars(list) : variables for the height
     '''
     with open('setting.comp','r') as f:
         htvars = f.readlines()[2]
@@ -258,19 +281,29 @@ def set_read():
 
 
 def inwrite(finname, indata):
-    '''
-    this funcion is making integrated file with the input data
-    first, 'indata' is the dataframe with outliers removed. (returned from oldetector)
-    second, this will read the file name of the station according to the input file name(finname)
-        this 'finname' is same variable with one goes into readdate() function
-        and according to the finname var, which station it belongs to will be determined(foutname)
-        foutname is local variable for this function and will not be shared with other functions
-    third, the pandas dataframe will be written in the csv form with named 'foutname'
+    '''_Summary
+        this funcion is making integrated file with the input data
+        first, 'indata' is the dataframe with outliers removed. (returned from oldetector)
+        second, this will read the file name of the station according to the input file name(finname)
+            this 'finname' is same variable with one goes into readdate() function
+            and according to the finname var, which station it belongs to will be determined(foutname)
+            foutname is local variable for this function and will not be shared with other functions
+        third, the pandas dataframe will be written in the csv form with named 'foutname'
 
-    # todo : baro pressure should be in the integrated data
-    # todo : another reading method in case of the baro
-    # todo : find the closest time of the observation between logger and baro
-    reference: https://hyang2data.tistory.com/2
+        # todo : baro pressure should be in the integrated data
+        # todo : another reading method in case of the baro
+        # todo : find the closest time of the observation between logger and baro
+        reference: https://hyang2data.tistory.com/2
+    
+    Args(*: input or output):
+        *finname(string) : file name of the input dataframe
+        *indata(dataframe) : dataframe passed from oldetector
+        mergedata(dataframe) : dataframe concatenated old and new logger data
+        foutname(string) : file name of integrated logger data
+    
+    Returns:
+        nothing returns from this function
+        
     '''
 
     import os
