@@ -274,11 +274,11 @@ updatelist =  history()
 testin = updatelist[0][0]
 testout = 'OUT_integrated.csv'
 data = readdata(testin, testout)
-graphy('TEST GRAPH', data, 'Datetime', 'Level(m)', 'Temp(C)')
 
 # testing oldector
 data = oldetector(data)
 indexlist = data.columns.to_list() # make colums as variable (use for graphy)
+graphy('TEST GRAPH', data, 'Datetime', 'Level(m)', 'Temp(C)')
 
 # testing set_read
 htvars = set_read()
