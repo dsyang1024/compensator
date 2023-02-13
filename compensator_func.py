@@ -39,7 +39,7 @@ def graphy(finname, indata, xvar, y1var, y2var):
     Return: graph saved
 
     # todo : get the name of station outside the function and make it as title variable
-    # todo : antoher graph method if finname is baro
+    # todo : another graph method if finname is baro
     '''
 
     import pandas as pd
