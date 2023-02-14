@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8151b15-ee69-4fda-a66b-41e8f6c7f79c" name="Changes" comment="ported to the pycharm and continue updating">
-      <change beforePath="$PROJECT_DIR$/.idea/compensator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compensator.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compensator_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/compensator_func.py" afterDir="false" />
-    </list>
+    <list default="true" id="b8151b15-ee69-4fda-a66b-41e8f6c7f79c" name="Changes" comment="ported to the pycharm and continue updating 03" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -95,7 +90,7 @@
       <workItem from="1676331775970" duration="27000" />
       <workItem from="1676331818703" duration="719000" />
       <workItem from="1676332544931" duration="227000" />
-      <workItem from="1676332844864" duration="926000" />
+      <workItem from="1676332844864" duration="1563000" />
     </task>
     <task id="LOCAL-00001" summary="ported to the pycharm and continue updating">
       <created>1676332245267</created>
@@ -111,7 +106,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676332308746</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="ported to the pycharm and continue updating 03">
+      <created>1676333800540</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1676333800540</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,6 +132,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="ported to the pycharm and continue updating" />
-    <option name="LAST_COMMIT_MESSAGE" value="ported to the pycharm and continue updating" />
+    <MESSAGE value="ported to the pycharm and continue updating 03" />
+    <option name="LAST_COMMIT_MESSAGE" value="ported to the pycharm and continue updating 03" />
   </component>
 </project>
