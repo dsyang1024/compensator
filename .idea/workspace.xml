@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8151b15-ee69-4fda-a66b-41e8f6c7f79c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compensator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compensator.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b8151b15-ee69-4fda-a66b-41e8f6c7f79c" name="Changes" comment="ported to the pycharm and continue updating">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compensator_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/compensator_func.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +29,11 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -38,6 +42,9 @@
       <module name="compensator" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -86,8 +93,24 @@
       <updated>1676331522063</updated>
       <workItem from="1676331541977" duration="165000" />
       <workItem from="1676331775970" duration="27000" />
-      <workItem from="1676331818703" duration="281000" />
+      <workItem from="1676331818703" duration="719000" />
+      <workItem from="1676332544931" duration="227000" />
     </task>
+    <task id="LOCAL-00001" summary="ported to the pycharm and continue updating">
+      <created>1676332245267</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1676332245267</updated>
+    </task>
+    <task id="LOCAL-00002" summary="ported to the pycharm and continue updating">
+      <created>1676332308746</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1676332308746</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -103,5 +126,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ported to the pycharm and continue updating" />
+    <option name="LAST_COMMIT_MESSAGE" value="ported to the pycharm and continue updating" />
   </component>
 </project>
