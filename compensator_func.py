@@ -229,11 +229,11 @@ def oldetector(indata):
     import seaborn as sns
     import matplotlib.pyplot as plt
 
-    """# showing graph with outliers
-    figure, axes = plt.subplots(2,1, figsize=(12,5))
+    # showing graph with outliers
+    figure, axes = plt.subplots(2,1, figsize=(12,8))
     sns.lineplot(ax=axes[0], x=indata['Datetime'], y=indata['Level(m)'])
     sns.boxplot(ax = axes[1], x=indata['Level(m)'])
-    plt.show()"""
+    plt.show()
 
     print('\n====== Stats for data =====')
     print(indata.describe())
