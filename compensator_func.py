@@ -20,6 +20,7 @@ comp >> graphy
 intwrite
 
 """
+from typing import List
 
 
 def graphy(finname, indata, xvar, y1var, y2var):
@@ -160,7 +161,7 @@ def history():
     return (OUTfile, ILAfile, ILBfile, CENfile)
 
     """
-    # important! this line commented for testing
+    important! this line commented for testing
     with open('history.log','w') as fhistory:
         for i in [newOUTfile, newILAfile, newILBfile, newCENfile]:
             for r in i:
@@ -274,7 +275,7 @@ def set_read():
     """
     with open('setting.comp', 'r') as f:
         htvars = f.readlines()[2]
-        htvars = htvars.split(',')
+        htvars: list[str] = htvars.split(',')
         htvars = [float(i) for i in htvars]
     print('===== Comp variables imported =====\n')
 
@@ -326,10 +327,11 @@ def inwrite(finname, indata):
         foutname = 'BARO_integrated.csv'
         print('===== File name is BARO_integrated.csv =====\n')
     else:
+        foutname = 'Empty'
         print('===== Check the file name =====\n')
 
     # in the case if foutname file not exist,
-    if os.path.isfile(foutname) == False:
+    if not os.path.isfile(foutname):
         with open(foutname, 'w') as f:
             f.close()
             print('=====', foutname, 'file is made =====')
