@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8151b15-ee69-4fda-a66b-41e8f6c7f79c" name="Changes" comment="adding assets directory&#10;comments updated">
-      <change afterPath="$PROJECT_DIR$/2023-02-15_ACRE outlet water level.png" afterDir="false" />
+    <list default="true" id="b8151b15-ee69-4fda-a66b-41e8f6c7f79c" name="Changes" comment="Workspace update&#10;image from run added&#10;graph before outlier removal remained">
+      <change afterPath="$PROJECT_DIR$/compensator_func.py.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compensator_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/compensator_func.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +110,7 @@
       <workItem from="1676331818703" duration="719000" />
       <workItem from="1676332544931" duration="227000" />
       <workItem from="1676332844864" duration="1563000" />
-      <workItem from="1676475757996" duration="1946000" />
+      <workItem from="1676475757996" duration="6067000" />
     </task>
     <task id="LOCAL-00001" summary="ported to the pycharm and continue updating">
       <created>1676332245267</created>
@@ -141,7 +140,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676476901766</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Workspace update&#10;image from run added&#10;graph before outlier removal remained">
+      <created>1676477808022</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1676477808022</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,6 +169,8 @@
     <MESSAGE value="ported to the pycharm and continue updating" />
     <MESSAGE value="ported to the pycharm and continue updating 03" />
     <MESSAGE value="adding assets directory&#10;comments updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding assets directory&#10;comments updated" />
+    <MESSAGE value="w" />
+    <MESSAGE value="Workspace update&#10;image from run added&#10;graph before outlier removal remained" />
+    <option name="LAST_COMMIT_MESSAGE" value="Workspace update&#10;image from run added&#10;graph before outlier removal remained" />
   </component>
 </project>
