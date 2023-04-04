@@ -56,6 +56,8 @@ def graphy(finname, indata, xvar, y1var, y2var):
         title = 'ACRE inlet B water level'
     elif 'CEN' in finname:
         title = 'ACRE center water level'
+    elif 'F63' in finname:
+        title = 'ACRE F63 water level'
     else:
         print('===== Check the file name =====\n')
 
@@ -114,6 +116,9 @@ def history():
     # print(ILBfile)
     CENfile = [i for i in data_list if 'CEN' in i]
     # print(CENfile)
+    F63file = [i for i in data_list if 'F63' in i]
+    # print(F63file)
+
 
     # step 2. check the existance of the new file using history log
     # Read history file, if it does not exist, make a new one
@@ -126,8 +131,10 @@ def history():
         oldILAfile = [i[:-1] for i in olddata_list if 'ILA' in i]
         oldILBfile = [i[:-1] for i in olddata_list if 'ILB' in i]
         oldCENfile = [i[:-1] for i in olddata_list if 'CEN' in i]
+        oldF63file = [i[:-1] for i in olddata_list if 'F63' in i]
+
         print('\n\n::: Previous Data status :::', '\nOUT :: ', len(oldOUTfile), '\nILA :: ', len(oldILAfile),
-              '\nILB :: ', len(oldILBfile), '\nCEN :: ', len(oldCENfile))
+              '\nILB :: ', len(oldILBfile), '\nCEN :: ', len(oldCENfile),'\nF63 :: ', len(oldF63file))
     except:
         print('[Error 02] File doesnot exist and made a new file')
         fhistory = open('history.log', 'w')
@@ -137,6 +144,7 @@ def history():
         oldILAfile = []
         oldILBfile = []
         oldCENfile = []
+        oldF63file = []
 
     # Check there is new data or not for each station
     # is OUTfile item is in the oldOUTfile list, it will be removed
@@ -144,8 +152,9 @@ def history():
     ILAfile = [i for i in ILAfile if i not in oldILAfile]
     ILBfile = [i for i in ILBfile if i not in oldILBfile]
     CENfile = [i for i in CENfile if i not in oldCENfile]
+    F63file = [i for i in F63file if i not in oldF63file]
     print('\n\n::: Updated Data status :::', '\nOUT :: ', len(OUTfile), '\nILA :: ', len(ILAfile), '\nILB :: ',
-          len(ILBfile), '\nCEN :: ', len(CENfile))
+          len(ILBfile), '\nCEN :: ', len(CENfile), '\nF63 :: ', len(F63file))
 
     # step 3. make a new history log including updated file list
     # merge old list and new list
@@ -157,20 +166,23 @@ def history():
     newILBfile.sort()
     newCENfile = oldCENfile + CENfile
     newCENfile.sort()
+    newF63file = oldF63file + F63file
+    newF63file.sort()
 
-    return (OUTfile, ILAfile, ILBfile, CENfile)
 
-    """
-    important! this line commented for testing
+    # important! this line commented for testing
     with open('history.log','w') as fhistory:
-        for i in [newOUTfile, newILAfile, newILBfile, newCENfile]:
+        for i in [newOUTfile, newILAfile, newILBfile, newCENfile, newF63file]:
             for r in i:
                 fhistory.write(r)
                 fhistory.write('\n')
             fhistory.write('\n\n')
-    print('history log file updated')
+
+    print('==== history log file updated ====\n')
+
+    return (OUTfile, ILAfile, ILBfile, CENfile, F63file)
+
     
-    """
 
 
 def readdata(finname):
@@ -230,10 +242,10 @@ def oldetector(indata):
     import matplotlib.pyplot as plt
 
     # showing graph with outliers
-    figure, axes = plt.subplots(2,1, figsize=(12,8))
-    sns.lineplot(ax=axes[0], x=indata['Datetime'], y=indata['Level(m)'])
-    sns.boxplot(ax = axes[1], x=indata['Level(m)'])
-    plt.show()
+    # figure, axes = plt.subplots(2,1, figsize=(12,8))
+    # sns.lineplot(ax=axes[0], x=indata['Datetime'], y=indata['Level(m)'])
+    # sns.boxplot(ax = axes[1], x=indata['Level(m)'])
+    # plt.show()
 
     print('\n====== Stats for data =====')
     print(indata.describe())
@@ -244,18 +256,22 @@ def oldetector(indata):
         q1 = indata['Level(m)'].quantile(0.25)
         q3 = indata['Level(m)'].quantile(0.75)
         IQR = q3 - q1
-        outliers = indata[((indata['Level(m)'] < (q1 - 1.5 * IQR)) | (indata['Level(m)'] > (q3 + 1.5 * IQR)))]
+        # outliers = indata[((indata['Level(m)'] < (q1 - 1.5 * IQR)) | (indata['Level(m)'] > (q3 + 1.5 * IQR)))]
+        outliers = indata.nsmallest(10,'Level(m)')
         print('\n===== Outlier Detected for Level(m) =====')
         print(outliers)
         print('...', len(outliers), ' outliers detected\n')
         rmlist = outliers.index.to_list()
-
-        for i in rmlist:
-            outdata = indata.drop(i)
-        figure, axes = plt.subplots(2, 1, figsize=(12, 8))
-        sns.lineplot(ax=axes[0], x=outdata['Datetime'], y=outdata['Level(m)']).set(title='Outliers Removed')
-        sns.boxplot(ax=axes[1], x=outdata['Level(m)'])
-        plt.show()
+        print(rmlist)
+        outdata = indata.drop(rmlist)
+        # for i in rmlist:
+            # outdata = indata.drop(i)
+        
+        # plot the graph with outlier removed
+        # figure, axes = plt.subplots(2, 1, figsize=(12, 8))
+        # sns.lineplot(ax=axes[0], x=outdata['Datetime'], y=outdata['Level(m)']).set(title='Outliers Removed')
+        # sns.boxplot(ax=axes[1], x=outdata['Level(m)'])
+        # plt.show()
 
     # return dataframe with outliers removed
     return outdata
@@ -326,6 +342,9 @@ def inwrite(finname, indata):
     elif 'BARO' in finname:
         foutname = 'BARO_integrated.csv'
         print('===== File name is BARO_integrated.csv =====\n')
+    elif 'F63' in finname:
+        foutname = 'F63_integrated.csv'
+        print('===== File name is F63_integrated.csv =====\n')
     else:
         foutname = 'Empty'
         print('===== Check the file name =====\n')
@@ -335,7 +354,7 @@ def inwrite(finname, indata):
         with open(foutname, 'w') as f:
             f.close()
             print('=====', foutname, 'file is made =====')
-
+    
     # step 2. read existing data from foutname
     exdata = pd.read_csv(foutname, encoding='cp949', sep=',', names=['Datetime', 'ms', 'Level(m)', 'Temp(C)'],
                          skiprows=1)  # this encoding and separation is following solinst format
@@ -350,7 +369,10 @@ def inwrite(finname, indata):
     mergedata.drop_duplicates(['Datetime'])
 
     # step 4. turn pandas data frame into integrated file
-    mergedata.to_csv('OUT_integrated_1.csv', index=False)
+    mergedata.to_csv(foutname, index=False)
+
+    # step 5. implement graphy
+    graphy(foutname, mergedata, 'Datetime', 'Level(m)', 'Temp(C)')
 
 
 # =====================================================================
@@ -377,14 +399,18 @@ updatelist = history()
 htvars = set_read()
 
 # testing readdata and graphy
-testin = updatelist[0][0]
-data = readdata(testin)
+for i in updatelist:
+    for r in i:
+        # testin = updatelist[0][0]
+        testin = r
+        data = readdata(testin)
 
-# testing oldetector
-data = oldetector(data)
-indexlist = data.columns.to_list()  # make columns as variable (use for graphy)
+        # testing oldetector
+        data = oldetector(data)
+        indexlist = data.columns.to_list()  # make columns as variable (use for graphy)
 
-graphy(testin, data, 'Datetime', 'Level(m)', 'Temp(C)')
 
-# testing inwrite
-inwrite(testin, data)
+        # testing inwrite
+        inwrite(testin, data)
+        # graphy(testin, data, 'Datetime', 'Level(m)', 'Temp(C)')
+
