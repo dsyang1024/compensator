@@ -256,7 +256,7 @@ def oldetector(indata):
         q1 = indata['Level(m)'].quantile(0.25)
         q3 = indata['Level(m)'].quantile(0.75)
         IQR = q3 - q1
-        # outliers = indata[((indata['Level(m)'] < (q1 - 1.5 * IQR)) | (indata['Level(m)'] > (q3 + 1.5 * IQR)))]
+        outliers = indata[((indata['Level(m)'] < (q1 - 1.5 * IQR)) | (indata['Level(m)'] > (q3 + 1.5 * IQR)))]
         outliers = indata.nsmallest(10,'Level(m)')
         print('\n===== Outlier Detected for Level(m) =====')
         print(outliers)
