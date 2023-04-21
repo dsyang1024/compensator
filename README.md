@@ -34,8 +34,14 @@ This library is including multiple functions for compensation
 9. *  set_read : this file will read environmental variables for the compensation
 
 ===== System Flow =====
-history / set_read
-Baro_crawler >> baro_cali
-readdata >> oldetector
-comp >> graphy
-intwrite
+|Step|Function name|What they do?|
+|------|---|---|
+|테스트1|테스트2|테스트3|
+|테스트1|테스트2|테스트3|
+|테스트1|테스트2|테스트3|
+
+- step 1. history / set_read
+- step 2. Baro_crawler >> baro_cali
+- step 3. readdata >> oldetector
+- step 4. comp >> graphy
+- step 5. intwrite
