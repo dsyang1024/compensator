@@ -3,6 +3,8 @@ This is project for building compensator for the level loggers in the wetland pr
 
 
 ## Update log
+This is only for the major update
+>Minor update will be addressed below for each functions
 - 2023.02.05 Basic concept of the program designed
 - 2023.02.07 Reinforce the basic design of the program and update readme file
 - 2023.03.12 Updated readdata function to read all the data
@@ -21,6 +23,7 @@ This is project for building compensator for the level loggers in the wetland pr
 ## Draft of the project
 
 This library is including multiple functions for compensation
+
 * done // *= needs to be modified // == needs more idea and plan
 1. * graphy : draw graph for the data from pandas dataframe
 2. *  history : update history.log file for future management of the data files
@@ -35,7 +38,7 @@ This library is including multiple functions for compensation
 
 ## System Flow
 |Step|Function name|What they do?|
-|------|---|---|
+|:---:|:---:|:---:|
 |테스트1|테스트2|테스트3|
 |테스트1|테스트2|테스트3|
 |테스트1|테스트2|테스트3|
