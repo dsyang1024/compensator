@@ -3,7 +3,8 @@ This library is including multiple functions for compensation
 * done // *= needs to be modified // == needs more idea and plan
 1. *= graphy : draw graph for the data from pandas dataframe
 2. *  history : update history.log file for future management of the data files
-3. *= readdata : read data file, make it as dataframe format.
+3. *= readdata : read data file, make it as dataframe format
+    3.1. == contdate : Control the date in case they are not in interval of every 5 min
 4. *= intwrite : read all the compensated data, write it to the integrated file
 5. == comp : compensation function for the loggers using baro
              from this function, the baro data(ATM) will be added to the dataframe of the level logger
@@ -58,6 +59,8 @@ def graphy(finname, indata, xvar, y1var, y2var):
         title = 'ACRE center water level'
     elif 'F63' in finname:
         title = 'ACRE F63 water level'
+    elif 'BARO' in finname:
+        title = 'ACRE BARO Pressure'
     else:
         print('===== Check the file name =====\n')
 
@@ -107,17 +110,26 @@ def history():
 
     # step 1. import all the data in the data folder
     data_list = os.listdir('data/')
+    data_list.remove('.DS_Store')
     # print(data_list)
-    OUTfile = [i for i in data_list if 'OUT' in i]
+    OUTfile = [i for i in data_list if 'OUT_COMP' in i]
     # print(OUTfile)
-    ILAfile = [i for i in data_list if 'ILA' in i]
+    ILAfile = [i for i in data_list if 'ILA_COMP' in i]
     # print(ILAfile)
-    ILBfile = [i for i in data_list if 'ILB' in i]
+    ILBfile = [i for i in data_list if 'ILB_COMP' in i]
     # print(ILBfile)
-    CENfile = [i for i in data_list if 'CEN' in i]
+    CENfile = [i for i in data_list if 'CEN_COMP' in i]
     # print(CENfile)
-    F63file = [i for i in data_list if 'F63' in i]
+    F63file = [i for i in data_list if 'F63_COMP' in i]
     # print(F63file)
+    BAROfile = [i for i in data_list if 'BARO' in i]
+    # print(BAROfile)
+
+    # list of file requires compensation
+    # remove compensated data
+    Compreq = [i for i in data_list if not i.endswith('COMP.csv')]
+    # remove baro data
+    Compreq = [i for i in Compreq if not i.endswith('BARO.csv')]
 
 
     # step 2. check the existance of the new file using history log
@@ -132,9 +144,13 @@ def history():
         oldILBfile = [i[:-1] for i in olddata_list if 'ILB' in i]
         oldCENfile = [i[:-1] for i in olddata_list if 'CEN' in i]
         oldF63file = [i[:-1] for i in olddata_list if 'F63' in i]
+        oldBAROfile = [i[:-1] for i in olddata_list if 'BARO' in i]
 
-        print('\n\n::: Previous Data status :::', '\nOUT :: ', len(oldOUTfile), '\nILA :: ', len(oldILAfile),
-              '\nILB :: ', len(oldILBfile), '\nCEN :: ', len(oldCENfile),'\nF63 :: ', len(oldF63file))
+
+        print('\n\n::: Previous Data status :::', '\nOUT :: ',
+              len(oldOUTfile), '\nILA :: ', len(oldILAfile), '\nILB :: ',
+              len(oldILBfile), '\nCEN :: ', len(oldCENfile), '\nF63 :: ',
+              len(oldF63file), '\nBARO :: ', len(oldBAROfile))
     except:
         print('[Error 02] File doesnot exist and made a new file')
         fhistory = open('history.log', 'w')
@@ -145,6 +161,7 @@ def history():
         oldILBfile = []
         oldCENfile = []
         oldF63file = []
+        oldBAROfile = []
 
     # Check there is new data or not for each station
     # is OUTfile item is in the oldOUTfile list, it will be removed
@@ -153,8 +170,10 @@ def history():
     ILBfile = [i for i in ILBfile if i not in oldILBfile]
     CENfile = [i for i in CENfile if i not in oldCENfile]
     F63file = [i for i in F63file if i not in oldF63file]
+    BAROfile = [i for i in BAROfile if i not in oldBAROfile]
+
     print('\n\n::: Updated Data status :::', '\nOUT :: ', len(OUTfile), '\nILA :: ', len(ILAfile), '\nILB :: ',
-          len(ILBfile), '\nCEN :: ', len(CENfile), '\nF63 :: ', len(F63file))
+          len(ILBfile), '\nCEN :: ', len(CENfile), '\nF63 :: ', len(BAROfile), '\nBARO :: ', len(BAROfile))
 
     # step 3. make a new history log including updated file list
     # merge old list and new list
@@ -168,11 +187,12 @@ def history():
     newCENfile.sort()
     newF63file = oldF63file + F63file
     newF63file.sort()
-
+    newBAROfile = oldBAROfile + BAROfile
+    newBAROfile.sort()
 
     # important! this line commented for testing
     with open('history.log','w') as fhistory:
-        for i in [newOUTfile, newILAfile, newILBfile, newCENfile, newF63file]:
+        for i in [newOUTfile, newILAfile, newILBfile, newCENfile, newF63file, newBAROfile]:
             for r in i:
                 fhistory.write(r)
                 fhistory.write('\n')
@@ -180,9 +200,9 @@ def history():
 
     print('==== history log file updated ====\n')
 
-    return (OUTfile, ILAfile, ILBfile, CENfile, F63file)
+    return (OUTfile, ILAfile, ILBfile, CENfile, F63file, BAROfile), Compreq
 
-    
+
 
 
 def readdata(finname):
@@ -203,15 +223,28 @@ def readdata(finname):
     import pandas as pd
 
     # step 1. read the file
-    data = pd.read_csv('data/' + finname, encoding='cp949', sep=',',
-                       names=['Datetime', 'time', 'ms', 'Level(m)', 'Temp(C)'],
-                       skiprows=12)  # this encoding and separation is following solinst format
+    if 'BARO' in finname:
+        data = pd.read_csv(
+            'data/' + finname,
+            encoding='cp949',
+            sep=',',
+            names=['Datetime', 'time', 'ms', 'Pressure(kPa)', 'Temp(C)'],
+            skiprows=12
+        )  # this encoding and separation is following solinst format
+    else:
+        data = pd.read_csv(
+            'data/' + finname,
+            encoding='cp949',
+            sep=',',
+            names=['Datetime', 'time', 'ms', 'Level(m)', 'Temp(C)'],
+            skiprows=12
+        )  # this encoding and separation is following solinst format
 
     # step 2. change the format of data and time creating one column
-    data['Datetime'] = pd.to_datetime(
-        data['Datetime'] + ' ' + data['time'])  # changed date column to the datetime format of the pandas for sorting
-    data['Datetime'] = pd.to_datetime(data['Datetime'],
-                                      format='%m/%d/%Y %H:%M:%S %p')  # changed date column to the datetime format of the pandas for sorting
+    # changed date column to the datetime format of the pandas for sorting
+    data['Datetime'] = pd.to_datetime(data['Datetime'] + ' ' + data['time'])
+    # changed date column to the datetime format of the pandas for sorting
+    data['Datetime'] = pd.to_datetime(data['Datetime'],format='%m/%d/%Y %H:%M:%S %p')
     del data['time']  # deleted time column since datatime column is containing all of the info needed
     # print(data)
 
@@ -265,14 +298,15 @@ def oldetector(indata):
         print(rmlist)
         outdata = indata.drop(rmlist)
         # for i in rmlist:
-            # outdata = indata.drop(i)
-        
+        # outdata = indata.drop(i)
+
         # plot the graph with outlier removed
         # figure, axes = plt.subplots(2, 1, figsize=(12, 8))
         # sns.lineplot(ax=axes[0], x=outdata['Datetime'], y=outdata['Level(m)']).set(title='Outliers Removed')
         # sns.boxplot(ax=axes[1], x=outdata['Level(m)'])
         # plt.show()
-
+    else:
+        outdata = indata
     # return dataframe with outliers removed
     return outdata
 
@@ -339,12 +373,12 @@ def inwrite(finname, indata):
     elif 'CEN' in finname:
         foutname = 'CEN_integrated.csv'
         print('===== File name is CEN_integrated.csv =====\n')
-    elif 'BARO' in finname:
-        foutname = 'BARO_integrated.csv'
-        print('===== File name is BARO_integrated.csv =====\n')
     elif 'F63' in finname:
         foutname = 'F63_integrated.csv'
         print('===== File name is F63_integrated.csv =====\n')
+    elif 'BARO' in finname:
+        foutname = 'BARO_integrated.csv'
+        print('===== File name is BARO_integrated.csv =====\n')
     else:
         foutname = 'Empty'
         print('===== Check the file name =====\n')
@@ -354,12 +388,25 @@ def inwrite(finname, indata):
         with open(foutname, 'w') as f:
             f.close()
             print('=====', foutname, 'file is made =====')
-    
+
     # step 2. read existing data from foutname
-    exdata = pd.read_csv(foutname, encoding='cp949', sep=',', names=['Datetime', 'ms', 'Level(m)', 'Temp(C)'],
-                         skiprows=1)  # this encoding and separation is following solinst format
-    exdata['Datetime'] = pd.to_datetime(exdata['Datetime'],
-                                        format='%Y-%m-%d %H:%M:%S')  # changed date column to the datetime format of the pandas for sorting
+    if 'BARO' in foutname:
+        exdata = pd.read_csv(
+            foutname,
+            encoding='cp949',
+            sep=',',
+            names=['Datetime', 'ms', 'Pressure(kPa)', 'Temp(C)'],
+            skiprows=1)
+        # this encoding and separation is following solinst format
+    else:
+        exdata = pd.read_csv(
+            foutname,
+            encoding='cp949',
+            sep=',', names=['Datetime', 'ms', 'Level(m)', 'Temp(C)'],
+            skiprows=1)
+        # this encoding and separation is following solinst format
+
+    exdata['Datetime'] = pd.to_datetime(exdata['Datetime'],format='%Y-%m-%d %H:%M:%S')  # changed date column to the datetime format of the pandas for sorting
 
     # step 3. add updated data to the integrated file with sorting data according to datetime column
     mergedata = pd.concat([indata, exdata])
@@ -372,13 +419,16 @@ def inwrite(finname, indata):
     mergedata.to_csv(foutname, index=False)
 
     # step 5. implement graphy
-    graphy(foutname, mergedata, 'Datetime', 'Level(m)', 'Temp(C)')
+    if 'BARO' in foutname:
+        graphy(foutname, mergedata, 'Datetime', 'Pressure(kPa)', 'Temp(C)')
+    else:
+        graphy(foutname, mergedata, 'Datetime', 'Level(m)', 'Temp(C)')
 
 
 # =====================================================================
-# 
+#
 # Testing the functions
-# 
+#
 # =====================================================================
 
 """
@@ -393,12 +443,23 @@ inwrite
 import pandas as pd
 
 # testing history
-updatelist = history()
+updatelist, Compreq = history()
+print('\n===== Compensation required =====\n',Compreq,'\n')
+
 
 # testing set_read
 htvars = set_read()
 
-# testing readdata and graphy
+
+
+
+# testing compensation
+
+
+
+
+# testing integrating files and run graphy
+'''
 for i in updatelist:
     for r in i:
         # testin = updatelist[0][0]
@@ -412,5 +473,4 @@ for i in updatelist:
 
         # testing inwrite
         inwrite(testin, data)
-        # graphy(testin, data, 'Datetime', 'Level(m)', 'Temp(C)')
-
+'''
