@@ -3,8 +3,8 @@ This is project for building compensator for the level loggers in the wetland pr
 
 
 ## Update log
-This is only for the major update
->Minor update will be addressed below for each functions
+This is only for the major updates
+>Minor updates will be addressed below for each functions
 - 2023.02.05 Basic concept of the program designed
 - 2023.02.07 Reinforce the basic design of the program and update readme file
 - 2023.03.12 Updated readdata function to read all the data
@@ -30,7 +30,7 @@ This library is including multiple functions for compensation
 3. * readdata : read data file, make it as dataframe format
 4. * intwrite : read all the compensated data, write it to the integrated file
 5. * comp : compensation function for the loggers using baro
-             from this function, the baro data(ATM) will be added to the dataframe of the level logger
+        > from this function, the baro data(ATM) will be added to the dataframe of the level logger
 6. == baro_crawler : crawling baro data from the purdue airport station
 7. == baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
 8. *  oldetector : outlier detector for various situation
