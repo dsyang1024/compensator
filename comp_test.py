@@ -1,8 +1,10 @@
 import pandas as pd
 import os
 from compensator_func import graphy
+import shutil
 
 finname = '2023_04_08_ACRE_ILA.csv'
+print('>>>',finname,'Compensating ...\n\n')
 
 Rawdata = pd.read_csv(
     'data/' + finname,
@@ -19,7 +21,6 @@ Rawdata['Datetime'] = pd.to_datetime(Rawdata['Datetime'],format='%m/%d/%Y %H:%M:
 # deleted time column since datatime column is containing all of the info needed
 del Rawdata['time']
 
-print(Rawdata)
 
 
 # step 2. find the matching baro data
@@ -30,9 +31,11 @@ matchbaro = '_'.join(matchbaro)
 
 # check is there any file matching the date
 if os.path.isfile('data/'+matchbaro) == True:
-    print('You have matching baro file for',matchbaro)
+    print('You have matching baro file for',matchbaro,'\n\n')
 else:
-    print('You do not have matching baro file for',matchbaro)
+    print('You do not have matching baro file for',matchbaro,'\n\n')
+    print('Check the file again and try.')
+    print('Process terminated.')
     os.exit()
 
 
@@ -49,7 +52,6 @@ barodata['Datetime'] = pd.to_datetime(barodata['Datetime'],format='%m/%d/%Y %H:%
 # deleted time column since datatime column is containing all of the info needed
 del barodata['time']
 
-print(barodata)
 
 
 # step 3. match the baro data to the level data and make compensate DF
@@ -68,12 +70,18 @@ All the units will be in m, please make sure
 
 '''
 Rawdata['Complevel(m)'] = (Rawdata['Level(m)']) - (Rawdata['Pressure(kPa)']*10.1972/100)
-print(Rawdata)
 
 # make graph of compensated level and pressure
 graphy(finname, Rawdata, 'Datetime', 'Complevel(m)', 'Pressure(kPa)')
 
+# remove Level column and change complevel column to level column
+del Rawdata['Level(m)']
+Rawdata.rename(columns = {'Complevel(m)':'Level(m)'})
+# save compensated data
 Rawdata.to_csv('data/'+finname[:-4]+'_COMP-test.csv')
+
+# after the compensation, move the raw data file to the 'comped_raw' folder
+shutil.move('data/'+finname,'comped_raw_data/'+finname)
 
 
 

@@ -1,12 +1,11 @@
 """
 This library is including multiple functions for compensation
 * done // *= needs to be modified // == needs more idea and plan
-1. *= graphy : draw graph for the data from pandas dataframe
+1. * graphy : draw graph for the data from pandas dataframe
 2. *  history : update history.log file for future management of the data files
-3. *= readdata : read data file, make it as dataframe format
-    3.1. == contdate : Control the date in case they are not in interval of every 5 min
-4. *= intwrite : read all the compensated data, write it to the integrated file
-5. == comp : compensation function for the loggers using baro
+3. * readdata : read data file, make it as dataframe format
+4. * intwrite : read all the compensated data, write it to the integrated file
+5. * comp : compensation function for the loggers using baro
              from this function, the baro data(ATM) will be added to the dataframe of the level logger
 6. == baro_crawler : crawling baro data from the purdue airport station
 7. == baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
@@ -22,6 +21,8 @@ intwrite
 
 """
 from typing import List
+import os, sys, shutil
+
 
 
 def graphy(finname, indata, xvar, y1var, y2var):
@@ -39,9 +40,6 @@ def graphy(finname, indata, xvar, y1var, y2var):
         y2var(dataframe column name) : variable y2 (right side, barometer), Temp(C)
 
     Return: graph saved
-
-    # todo : get the name of station outside the function and make it as title variable
-    # todo : another graph method if finname is baro
     """
 
     import seaborn as sns
@@ -49,18 +47,23 @@ def graphy(finname, indata, xvar, y1var, y2var):
     from datetime import datetime
 
     # confirm title for the graph
-    if 'OUT' in finname:
-        title = 'ACRE outlet water level'
-    elif 'ILA' in finname:
-        title = 'ACRE inlet A water level'
-    elif 'ILB' in finname:
-        title = 'ACRE inlet B water level'
-    elif 'CEN' in finname:
-        title = 'ACRE center water level'
-    elif 'F63' in finname:
-        title = 'ACRE F63 water level'
-    elif 'BARO' in finname:
-        title = 'ACRE BARO Pressure'
+    if 'integrated' in finname:
+        if 'OUT' in finname:
+            print('===== Integrated file  graph =====\n')
+            title = 'ACRE outlet water level'
+        elif 'ILA' in finname:
+            title = 'ACRE inlet A water level'
+        elif 'ILB' in finname:
+            title = 'ACRE inlet B water level'
+        elif 'CEN' in finname:
+            title = 'ACRE center water level'
+        elif 'F63' in finname:
+            title = 'ACRE F63 water level'
+        elif 'BARO' in finname:
+            title = 'ACRE BARO Pressure'
+    elif '.csv' in finname:
+        print('===== Compensated  graph =====\n')
+        title = finname
     else:
         print('===== Check the file name =====\n')
 
@@ -82,7 +85,7 @@ def graphy(finname, indata, xvar, y1var, y2var):
     plt.show()  # show graph
 
 
-def comp():
+def comp(finname):
     """
     need to read setup file for compensation.
     this compensation setting file inclues depth of the logger in the field
@@ -90,7 +93,90 @@ def comp():
     이건 확인이 더 필요할 듯
     comp이후 데이터 프레임은 뒤에 ATM(kPa)가 추가 되어야함
     """
-    print('this is function [comp]')
+
+    import pandas as pd
+
+    print('>>>', finname, 'Compensating ...\n\n')
+
+    Rawdata = pd.read_csv('data/' + finname,
+                        encoding='cp949',
+                        sep=',',
+                        names=['Datetime', 'time', 'ms', 'Level(m)', 'Temp(C)'],
+                        skiprows=12)
+
+    # step 1. change the format of data and time creating one column
+    # changed date column to the datetime format of the pandas for sorting
+    Rawdata['Datetime'] = pd.to_datetime(Rawdata['Datetime'] + ' ' +
+                                        Rawdata['time'])
+    # changed date column to the datetime format of the pandas for sorting
+    Rawdata['Datetime'] = pd.to_datetime(Rawdata['Datetime'],
+                                        format='%m/%d/%Y %H:%M:%S %p')
+    # deleted time column since datatime column is containing all of the info needed
+    del Rawdata['time']
+
+    # step 2. find the matching baro data
+    # find matching Barodate for the same date of finname
+    matchbaro = finname.split('_')
+    matchbaro[-1] = 'BARO.csv'
+    matchbaro = '_'.join(matchbaro)
+
+    # check is there any file matching the date
+    if os.path.isfile('data/' + matchbaro) == True:
+        print('You have matching baro file for', matchbaro, '\n\n')
+    else:
+        print('You do not have matching baro file for', matchbaro, '\n\n')
+        print('Check the file again and try.')
+        print('Process terminated.')
+        sys.exit()
+
+    barodata = pd.read_csv(
+        'data/' + matchbaro,
+        encoding='cp949',
+        sep=',',
+        names=['Datetime', 'time', 'ms', 'Pressure(kPa)', 'Temp(C)'],
+        skiprows=12)
+    # changed date column to the datetime format of the pandas for sorting
+    barodata['Datetime'] = pd.to_datetime(barodata['Datetime'] + ' ' +
+                                        barodata['time'])
+    # changed date column to the datetime format of the pandas for sorting
+    barodata['Datetime'] = pd.to_datetime(barodata['Datetime'],
+                                        format='%m/%d/%Y %H:%M:%S %p')
+    # deleted time column since datatime column is containing all of the info needed
+    del barodata['time']
+
+    # step 3. match the baro data to the level data and make compensate DF
+    # Baro values will be matched to the level values according to the datetime
+    # if they do not exactly match, nearest values will be placed
+    Rawdata = pd.merge_asof(Rawdata,
+                            barodata,
+                            on='Datetime',
+                            by='Datetime',
+                            direction='nearest')
+    # remove the NaN values
+    Rawdata = Rawdata.dropna()
+    
+    '''
+    step 4. Compensation
+    Using Level and Pressure data, it will be compensated
+    equation is below:
+        Compensated level = (Raw level) - (Baro value *10.1972 / 100)
+    All the units will be in m, please make sure
+
+    '''
+    Rawdata['Complevel(m)'] = (Rawdata['Level(m)']) - (Rawdata['Pressure(kPa)'] *
+                                                    10.1972 / 100)
+
+    # make graph of compensated level and pressure
+    graphy(finname, Rawdata, 'Datetime', 'Complevel(m)', 'Pressure(kPa)')
+
+    # remove Level column and change complevel column to level column
+    del Rawdata['Level(m)']
+    Rawdata.rename(columns={'Complevel(m)': 'Level(m)'})
+    # save compensated data
+    Rawdata.to_csv('data/' + finname[:-4] + '_COMP.csv')
+
+    # after the compensation, move the raw data file to the 'comped_raw' folder
+    shutil.move('data/' + finname, 'comped_raw_data/' + finname)
 
 
 def history():
@@ -106,11 +192,15 @@ def history():
     Returns:
          (OUTfile, ILAfile, ILBfile, CENfile)(list): list of files need to be update for each station
     """
-    import os
 
     # step 1. import all the data in the data folder
     data_list = os.listdir('data/')
-    data_list.remove('.DS_Store')
+    # only for github .DS_Store file
+    try:
+        data_list.remove('.DS_Store')
+    except:
+        pass
+
     # print(data_list)
     OUTfile = [i for i in data_list if 'OUT_COMP' in i]
     # print(OUTfile)
@@ -127,7 +217,7 @@ def history():
 
     # list of file requires compensation
     # remove compensated data
-    Compreq = [i for i in data_list if not i.endswith('COMP.csv')]
+    Compreq = [i for i in data_list if not 'COMP' in i]
     # remove baro data
     Compreq = [i for i in Compreq if not i.endswith('BARO.csv')]
 
@@ -198,11 +288,19 @@ def history():
                 fhistory.write('\n')
             fhistory.write('\n\n')
 
-    print('==== history log file updated ====\n')
+    # show message about the update
+    if len(OUTfile)+len(ILAfile)+len(ILBfile)+len(CENfile)+len(BAROfile)+len(BAROfile)+len(Compreq) == 0:
+        print('\n===== All the files are already up-to-date ! =====\n')
+        sys.exit()
+    else:
+        print('\n',
+            len(OUTfile) + len(ILAfile) + len(ILBfile) + len(CENfile) +
+            len(BAROfile) + len(BAROfile),'files for integration')
+        print(len(Compreq),'Files for compensation')
+        print('\n==== history log file updated ====\n')
+
 
     return (OUTfile, ILAfile, ILBfile, CENfile, F63file, BAROfile), Compreq
-
-
 
 
 def readdata(finname):
@@ -211,13 +309,14 @@ def readdata(finname):
     the integrated file will be updated
     additionally, this file will checking if there is any missing date within the data
     ** this function is using pandas
-    # todo : another reading method in case of the baro
 
     Args(*: input or output):
         *finname(string) : input file name (each updated data file)
 
     Returns:
         *data(dataframe) : dataframe from finname
+
+    TODO : Unit conversion if it is cm to m
     """
 
     import pandas as pd
@@ -342,9 +441,6 @@ def inwrite(finname, indata):
             foutname is local variable for this function and will not be shared with other functions
         third, the pandas dataframe will be written in the csv form with named 'foutname'
 
-        # todo : baro pressure should be in the integrated data
-        # todo : another reading method in case of the baro
-        # todo : find the closest time of the observation between logger and baro
         reference: https://hyang2data.tistory.com/2
 
     Args(*: input or output):
@@ -358,7 +454,6 @@ def inwrite(finname, indata):
 
     """
 
-    import os
 
     # step 1. confirm foutname for writing result
     if 'OUT' in finname:
@@ -440,15 +535,18 @@ comp >> graphy
 inwrite
 """
 
-import pandas as pd
-
-# testing history
-updatelist, Compreq = history()
-print('\n===== Compensation required =====\n',Compreq,'\n')
-
+# import pandas as pd
 
 # testing set_read
 htvars = set_read()
+
+# testing history
+updatelist, Compreq = history()
+print('\n===== Compensation required =====\n',str(len(Compreq)),'Files are needed for compensation ::\n')
+for compitem in Compreq: print(compitem)
+
+for i in Compreq:
+    comp(i)
 
 
 

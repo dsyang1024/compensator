@@ -11,6 +11,7 @@ This is project for building compensator for the level loggers in the wetland pr
 2023.04.10 Bug fixed for history function while updating list of records
 2023.04.20 Update for changing or the temporal interval to 5 min
 2023.04.20 Updated compensation function on the separate script 'comp_test.py'
+2023.04.21 Updated compensation function to move to 'comped_raw' folder after compensation
 
 
 
