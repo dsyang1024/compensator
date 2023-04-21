@@ -3,7 +3,6 @@ import os
 from compensator_func import graphy
 import shutil
 
-finname = '2023_04_08_ACRE_ILA.csv'
 print('>>>',finname,'Compensating ...\n\n')
 
 Rawdata = pd.read_csv(

@@ -18,11 +18,23 @@ This is project for building compensator for the level loggers in the wetland pr
 
 
 ## Draft of the project
-this project is consisted with the 5 parts.
-1. keep the barologger data
-2. Download Purdue airport barologger data(pressure)
-3. Update barologger
-    - If they have difference over certain range, calibrate the field barologger
-4. Compensate the data using barologger
-    - Update the existing level logger data (in one file)
-5. Make graph for all of loggers
+
+This library is including multiple functions for compensation
+* done // *= needs to be modified // == needs more idea and plan
+1. * graphy : draw graph for the data from pandas dataframe
+2. *  history : update history.log file for future management of the data files
+3. * readdata : read data file, make it as dataframe format
+4. * intwrite : read all the compensated data, write it to the integrated file
+5. * comp : compensation function for the loggers using baro
+             from this function, the baro data(ATM) will be added to the dataframe of the level logger
+6. == baro_crawler : crawling baro data from the purdue airport station
+7. == baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
+8. *  oldetector : outlier detector for various situation
+9. *  set_read : this file will read environmental variables for the compensation
+
+===== System Flow =====
+history / set_read
+Baro_crawler >> baro_cali
+readdata >> oldetector
+comp >> graphy
+intwrite
