@@ -40,6 +40,8 @@ def graphy(finname, indata, xvar, y1var, y2var):
         y2var(dataframe column name) : variable y2 (right side, barometer), Temp(C)
 
     Return: graph saved
+
+    TODO : make separate directory for saving the image
     """
 
     import seaborn as sns
@@ -451,7 +453,8 @@ def inwrite(finname, indata):
 
     Returns:
         nothing returns from this function
-
+        
+    TODO : make separate directory for saving integrated files
     """
 
 

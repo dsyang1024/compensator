@@ -22,7 +22,8 @@ This is project for building compensator for the level loggers in the wetland pr
 2023.04.21 Updated compensation function to move to 'comped_raw' folder after compensation
 
 
-
+### Next update
+- make separate directory for image and integrated files
 
 
 ## Draft of the project
