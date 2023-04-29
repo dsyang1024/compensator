@@ -156,7 +156,7 @@ def comp(finname):
                             direction='nearest')
     # remove the NaN values
     Rawdata = Rawdata.dropna()
-    
+
     '''
     step 4. Compensation
     Using Level and Pressure data, it will be compensated
@@ -165,8 +165,7 @@ def comp(finname):
     All the units will be in m, please make sure
 
     '''
-    Rawdata['Complevel(m)'] = (Rawdata['Level(m)']) - (Rawdata['Pressure(kPa)'] *
-                                                    10.1972 / 100)
+    Rawdata['Complevel(m)'] = (Rawdata['Level(m)']) - (Rawdata['Pressure(kPa)'] * 10.1972 / 100)
 
     # make graph of compensated level and pressure
     graphy(finname, Rawdata, 'Datetime', 'Complevel(m)', 'Pressure(kPa)')
@@ -192,7 +191,10 @@ def history():
     Args(*: input or output):
 
     Returns:
+         updatelist:
          (OUTfile, ILAfile, ILBfile, CENfile)(list): list of files need to be update for each station
+         compreq:
+         list of the files that need to be compensated
     """
 
     # step 1. import all the data in the data folder
@@ -301,6 +303,12 @@ def history():
         print(len(Compreq),'Files for compensation')
         print('\n==== history log file updated ====\n')
 
+    # print compensation required file number and list
+    print('\n===== Compensation required =====\n', str(len(Compreq)),
+          'Files are needed for compensation ::\n')
+    for compitem in Compreq:
+        print(compitem)
+
 
     return (OUTfile, ILAfile, ILBfile, CENfile, F63file, BAROfile), Compreq
 
@@ -376,10 +384,10 @@ def oldetector(indata):
     import matplotlib.pyplot as plt
 
     # showing graph with outliers
-    # figure, axes = plt.subplots(2,1, figsize=(12,8))
-    # sns.lineplot(ax=axes[0], x=indata['Datetime'], y=indata['Level(m)'])
-    # sns.boxplot(ax = axes[1], x=indata['Level(m)'])
-    # plt.show()
+    figure, axes = plt.subplots(2,1, figsize=(12,8))
+    sns.lineplot(ax=axes[0], x=indata['Datetime'], y=indata['Level(m)'])
+    sns.boxplot(ax = axes[1], x=indata['Level(m)'])
+    plt.show()
 
     print('\n====== Stats for data =====')
     print(indata.describe())
@@ -402,10 +410,10 @@ def oldetector(indata):
         # outdata = indata.drop(i)
 
         # plot the graph with outlier removed
-        # figure, axes = plt.subplots(2, 1, figsize=(12, 8))
-        # sns.lineplot(ax=axes[0], x=outdata['Datetime'], y=outdata['Level(m)']).set(title='Outliers Removed')
-        # sns.boxplot(ax=axes[1], x=outdata['Level(m)'])
-        # plt.show()
+        figure, axes = plt.subplots(2, 1, figsize=(12, 8))
+        sns.lineplot(ax=axes[0], x=outdata['Datetime'], y=outdata['Level(m)']).set(title='Outliers Removed')
+        sns.boxplot(ax=axes[1], x=outdata['Level(m)'])
+        plt.show()
     else:
         outdata = indata
     # return dataframe with outliers removed
@@ -459,6 +467,7 @@ def inwrite(finname, indata):
 
 
     # step 1. confirm foutname for writing result
+    # TODO 사용자가 지점이름을 직접입력하고 이를 나중에 리스트의 형태로 활용할 수  있도록 수정해보자
     if 'OUT' in finname:
         foutname = 'OUT_integrated.csv'
         print('===== File name is OUT_integrated.csv =====\n')
@@ -521,57 +530,3 @@ def inwrite(finname, indata):
         graphy(foutname, mergedata, 'Datetime', 'Pressure(kPa)', 'Temp(C)')
     else:
         graphy(foutname, mergedata, 'Datetime', 'Level(m)', 'Temp(C)')
-
-
-# =====================================================================
-#
-# Testing the functions
-#
-# =====================================================================
-
-"""
-===== System Flow =====
-history / set_read
-Baro_crawler >> baro_cali
-readdata >> oldetector
-comp >> graphy
-inwrite
-"""
-
-# import pandas as pd
-
-# testing set_read
-htvars = set_read()
-
-# testing history
-updatelist, Compreq = history()
-print('\n===== Compensation required =====\n',str(len(Compreq)),'Files are needed for compensation ::\n')
-for compitem in Compreq: print(compitem)
-
-for i in Compreq:
-    comp(i)
-
-
-
-
-# testing compensation
-
-
-
-
-# testing integrating files and run graphy
-'''
-for i in updatelist:
-    for r in i:
-        # testin = updatelist[0][0]
-        testin = r
-        data = readdata(testin)
-
-        # testing oldetector
-        data = oldetector(data)
-        indexlist = data.columns.to_list()  # make columns as variable (use for graphy)
-
-
-        # testing inwrite
-        inwrite(testin, data)
-'''
