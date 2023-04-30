@@ -26,15 +26,14 @@ htvars = set_read()
 # update history file
 # updatelist: already compensated and need to be added to integrated files
 # compreq: files need to be compensated
-updatelist1, Compreq = history()
+updatelist, Compreq = history()
 
 # compensate the file
 for i in Compreq:
     comp(i)
-
-# Update once more to include compensated files
-updatelist2, Compreq = history()
-updatelist = updatelist1 + updatelist2
+    # add compensated file names to update list
+    i.replace('.csv','_COMP.csv')
+    updatelist.append(i)
 
 
 # integrating files and run graphy
@@ -45,6 +44,7 @@ for i in updatelist:
         data = readdata(testin)
 
         # oldetector
+        print("{:=^60}".format(r))
         data = oldetector(data)
         # make columns as variable (use for graphy)
         indexlist = data.columns.to_list()

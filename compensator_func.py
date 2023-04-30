@@ -393,7 +393,7 @@ def oldetector(indata):
     print(indata.describe())
 
     # outlier detection is only for level and ATM
-    indexlist = data.columns.to_list()
+    indexlist = indata.columns.to_list()
     if 'Level(m)' in indexlist:
         q1 = indata['Level(m)'].quantile(0.25)
         q3 = indata['Level(m)'].quantile(0.75)
@@ -402,9 +402,10 @@ def oldetector(indata):
         outliers = indata.nsmallest(10,'Level(m)')
         print('\n===== Outlier Detected for Level(m) =====')
         print(outliers)
-        print('...', len(outliers), ' outliers detected\n')
+        print('...', len(outliers), ' outliers detected')
         rmlist = outliers.index.to_list()
         print(rmlist)
+        print('\n\n')
         outdata = indata.drop(rmlist)
         # for i in rmlist:
         # outdata = indata.drop(i)
@@ -416,6 +417,17 @@ def oldetector(indata):
         plt.show()
     else:
         outdata = indata
+
+    # metric analysis
+    tqmean = CalcTqmean(outdata['Level(m)'])
+    rbindex = CalcRBindex(outdata['Level(m)'])
+    sevenq = Calc7Q(outdata['Level(m)'])
+    threemed = CalcExceed3TimesMedian(outdata['Level(m)'])
+    print('====================  Metric Analysis  =====================')
+    print("{:^15}|{:^15}|{:^15}|{:^15}".format('TQ-Mean','RB-Index','7Q Values','3X Median'))
+    print("{:^15.3f}|{:^15.3f}|{:^15.3f}|{:^15}".format(tqmean, rbindex, sevenq,threemed))
+    print('============================================================\n')
+
     # return dataframe with outliers removed
     return outdata
 
@@ -464,7 +476,7 @@ def inwrite(finname, indata):
         
     TODO : make separate directory for saving integrated files
     """
-
+    import pandas as pd
 
     # step 1. confirm foutname for writing result
     # TODO 사용자가 지점이름을 직접입력하고 이를 나중에 리스트의 형태로 활용할 수  있도록 수정해보자
@@ -530,3 +542,100 @@ def inwrite(finname, indata):
         graphy(foutname, mergedata, 'Datetime', 'Pressure(kPa)', 'Temp(C)')
     else:
         graphy(foutname, mergedata, 'Datetime', 'Level(m)', 'Temp(C)')
+
+
+
+# Metric functions 4/30/2023
+
+def CalcTqmean(Qvalues):
+    """This function computes the Tqmean of a series of data, typically
+       a 1 year time series of streamflow, after filtering out NoData
+       values.  Tqmean is the fraction of time that daily streamflow
+       exceeds mean streamflow for each year. Tqmean is based on the
+       duration rather than the volume of streamflow. The routine returns
+       the Tqmean value for the given data array."""
+    # estimate mean streamflow for each year
+    # calculate mean
+    mean = sum(Qvalues) / len(Qvalues)
+    count = 0
+    # loop to calculate qvaule over mean
+    for i in Qvalues:
+        # count if qvalue is over mean
+        if i > mean:
+            count += 1
+    Tqmean = count / len(Qvalues)
+    return (Tqmean)
+
+
+def CalcRBindex(Qvalues):
+    """This function computes the Richards-Baker Flashiness Index
+       (R-B Index) of an array of values, typically a 1 year time
+       series of streamflow, after filtering out the NoData values.
+       The index is calculated by dividing the sum of the absolute
+       values of day-to-day changes in daily discharge volumes
+       (pathlength) by total discharge volumes for each year. The
+       routine returns the RBindex value for the given data array."""
+
+    abschg = 0
+    # loop to calculate sum of variation of daily value
+    for i in range(len(Qvalues) - 1):
+        try:
+            abschg = abschg + abs(Qvalues[i + 1] - Qvalues[i])
+        except:
+            pass
+    # calculate RBindex
+    RBindex = abschg / sum(Qvalues)
+
+    return (RBindex)
+
+
+def Calc7Q(Qvalues):
+    """This function computes the seven day low flow of an array of 
+       values, typically a 1 year time series of streamflow, after 
+       filtering out the NoData values. The index is calculated by 
+       computing a 7-day moving average for the annual dataset, and 
+       picking the lowest average flow in any 7-day period during
+       that year.  The routine returns the 7Q (7-day low flow) value
+       for the given data array."""
+
+    # calculate 7 days average flow
+    windowed = []
+    for i in range(len(Qvalues) - 7):
+        temp = 0
+        # calculate 7 days mean value
+        for r in range(7):
+            try:
+                temp = temp + Qvalues[i + r]
+            except:
+                pass
+        # get 7 days average
+        temp = temp / 7
+        windowed.append(temp)
+    # get the minimum value
+    val7Q = min(windowed)
+    return (val7Q)
+
+
+def CalcExceed3TimesMedian(Qvalues):
+    """This function computes the number of days with flows greater 
+       than 3 times the annual median flow. The index is calculated by 
+       computing the median flow from the given dataset (or using the value
+       provided) and then counting the number of days with flow greater than 
+       3 times that value.   The routine returns the count of events greater 
+       than 3 times the median annual flow value for the given data array."""
+    # get the median
+    medianvalue = Qvalues.median()
+    # multiply 3 to median
+    median3value = medianvalue * 3
+
+    # count if it is bigger than median x 3
+    counti = 0
+    for i in range(len(Qvalues)):
+        try:
+            if Qvalues[i] > median3value:
+                counti += 1
+        except:
+            pass
+    # get the number of median3x
+    median3x = int(counti)
+    return (median3x)
