@@ -48,6 +48,8 @@ def graphy(finname, indata, xvar, y1var, y2var):
     import matplotlib.pyplot as plt
     from datetime import datetime
 
+    now = datetime.now()  # to make filename
+
     # confirm title for the graph
     if 'integrated' in finname:
         if 'OUT' in finname:
@@ -64,8 +66,8 @@ def graphy(finname, indata, xvar, y1var, y2var):
         elif 'BARO' in finname:
             title = 'ACRE BARO Pressure'
     elif '.csv' in finname:
-        print('===== Compensated  graph =====\n')
         title = finname
+        print('>>> Compensated graph exported:', now.strftime('%Y-%m-%d') + '_' + title + '.png','\n')
     else:
         print('===== Check the file name =====\n')
 
@@ -82,9 +84,9 @@ def graphy(finname, indata, xvar, y1var, y2var):
     sns.lineplot(data=indata, x=xvar, y=y2var, color='salmon', ax=ax2, label=y2var)
     ax1.legend(labels=[y1var], loc=1)
     ax2.legend(labels=[y2var], loc=2)
-    now = datetime.now()  # to make filename
     plt.savefig(now.strftime('%Y-%m-%d') + '_' + title + '.png', dpi=500)  # saving figure
-    plt.show()  # show graph
+    plt.close()
+    # plt.show()  # show graph
 
 
 def comp(finname):
@@ -98,7 +100,7 @@ def comp(finname):
 
     import pandas as pd
 
-    print('>>>', finname, 'Compensating ...\n\n')
+    print('\n>>>', finname, 'Compensating ...')
 
     Rawdata = pd.read_csv('data/' + finname,
                         encoding='cp949',
@@ -124,9 +126,9 @@ def comp(finname):
 
     # check is there any file matching the date
     if os.path.isfile('data/' + matchbaro) == True:
-        print('You have matching baro file for', matchbaro, '\n\n')
+        print('You have matching baro file for', matchbaro, '\n')
     else:
-        print('You do not have matching baro file for', matchbaro, '\n\n')
+        print('You do not have matching baro file for', matchbaro, '\n')
         print('Check the file again and try.')
         print('Process terminated.')
         sys.exit()
@@ -171,10 +173,15 @@ def comp(finname):
     graphy(finname, Rawdata, 'Datetime', 'Complevel(m)', 'Pressure(kPa)')
 
     # remove Level column and change complevel column to level column
-    del Rawdata['Level(m)']
+    Rawdata['Level(m)'] = Rawdata['Complevel(m)']
+    del Rawdata['ms_y']
+    del Rawdata['Pressure(kPa)']
+    del Rawdata['Temp(C)_y']
+    del Rawdata['Complevel(m)']
+    
     Rawdata.rename(columns={'Complevel(m)': 'Level(m)'})
     # save compensated data
-    Rawdata.to_csv('data/' + finname[:-4] + '_COMP.csv')
+    Rawdata.to_csv('data/' + finname[:-4] + '_COMP.csv', index=False)
 
     # after the compensation, move the raw data file to the 'comped_raw' folder
     shutil.move('data/' + finname, 'comped_raw_data/' + finname)
@@ -196,6 +203,8 @@ def history():
          compreq:
          list of the files that need to be compensated
     """
+    # TODO need to think about the method that can update the list every single files not all at once, it is really being picky for debugging
+    # 
 
     # step 1. import all the data in the data folder
     data_list = os.listdir('data/')
@@ -231,7 +240,7 @@ def history():
     try:
         with open('history.log', 'r') as fhistory:
             olddata_list = fhistory.readlines()
-        print('Reading history log...')
+        print("{:=^60}".format(' Reading history log file '))
         # index [:-1] will make file name in the list without '\n'
         oldOUTfile = [i[:-1] for i in olddata_list if 'OUT' in i]
         oldILAfile = [i[:-1] for i in olddata_list if 'ILA' in i]
@@ -246,7 +255,7 @@ def history():
               len(oldILBfile), '\nCEN :: ', len(oldCENfile), '\nF63 :: ',
               len(oldF63file), '\nBARO :: ', len(oldBAROfile))
     except:
-        print('[Error 02] File doesnot exist and made a new file')
+        print('[Error 02] File does not exist and made a new file')
         fhistory = open('history.log', 'w')
         fhistory.close()
         # these empty list will prevent error when merging old/new lists below
@@ -297,20 +306,21 @@ def history():
         print('\n===== All the files are already up-to-date ! =====\n')
         sys.exit()
     else:
-        print('\n',
-            len(OUTfile) + len(ILAfile) + len(ILBfile) + len(CENfile) +
-            len(BAROfile) + len(BAROfile),'files for integration')
+        print('\n')
+        print(len(OUTfile) + len(ILAfile) + len(ILBfile) + len(CENfile) +
+            len(BAROfile) + len(BAROfile),'Files for integration')
         print(len(Compreq),'Files for compensation')
-        print('\n==== history log file updated ====\n')
+        print('\n')
+        print("{:=^60}".format(' History log file updated '))
 
     # print compensation required file number and list
-    print('\n===== Compensation required =====\n', str(len(Compreq)),
+    print(':: Compensation required ::\n', str(len(Compreq)),
           'Files are needed for compensation ::\n')
     for compitem in Compreq:
         print(compitem)
 
 
-    return (OUTfile, ILAfile, ILBfile, CENfile, F63file, BAROfile), Compreq
+    return [OUTfile, ILAfile, ILBfile, CENfile, F63file, BAROfile], Compreq
 
 
 def readdata(finname):
@@ -389,8 +399,9 @@ def oldetector(indata):
     sns.boxplot(ax = axes[1], x=indata['Level(m)'])
     plt.show()
 
-    print('\n====== Stats for data =====')
+    print("{:-^60}".format(' Data Stats Analysis '))
     print(indata.describe())
+    print('\n')
 
     # outlier detection is only for level and ATM
     indexlist = indata.columns.to_list()
@@ -400,12 +411,12 @@ def oldetector(indata):
         IQR = q3 - q1
         outliers = indata[((indata['Level(m)'] < (q1 - 1.5 * IQR)) | (indata['Level(m)'] > (q3 + 1.5 * IQR)))]
         outliers = indata.nsmallest(10,'Level(m)')
-        print('\n===== Outlier Detected for Level(m) =====')
+        print("{:-^60}".format(' Outlier detection for data'))
         print(outliers)
         print('...', len(outliers), ' outliers detected')
         rmlist = outliers.index.to_list()
         print(rmlist)
-        print('\n\n')
+        print('\n')
         outdata = indata.drop(rmlist)
         # for i in rmlist:
         # outdata = indata.drop(i)
@@ -448,8 +459,8 @@ def set_read():
         htvars = f.readlines()[2]
         htvars: list[str] = htvars.split(',')
         htvars = [float(i) for i in htvars]
-    print('===== Comp variables imported =====\n')
-
+    print("{:=^60}".format(' Comp variables imported '))
+    print('\n')
     return (htvars)
 
 
@@ -482,25 +493,25 @@ def inwrite(finname, indata):
     # TODO 사용자가 지점이름을 직접입력하고 이를 나중에 리스트의 형태로 활용할 수  있도록 수정해보자
     if 'OUT' in finname:
         foutname = 'OUT_integrated.csv'
-        print('===== File name is OUT_integrated.csv =====\n')
+        print('>>>>>===== File name is OUT_integrated.csv =====<<<<<\n')
     elif 'ILA' in finname:
         foutname = 'ILA_integrated.csv'
-        print('===== File name is ILA_integrated.csv =====\n')
+        print('>>>>>===== File name is ILA_integrated.csv =====<<<<<\n')
     elif 'ILB' in finname:
         foutname = 'ILB_integrated.csv'
-        print('===== File name is ILB_integrated.csv =====\n')
+        print('>>>>>===== File name is ILB_integrated.csv =====<<<<<\n')
     elif 'CEN' in finname:
         foutname = 'CEN_integrated.csv'
-        print('===== File name is CEN_integrated.csv =====\n')
+        print('>>>>>===== File name is CEN_integrated.csv =====<<<<<\n')
     elif 'F63' in finname:
         foutname = 'F63_integrated.csv'
-        print('===== File name is F63_integrated.csv =====\n')
+        print('>>>>>===== File name is F63_integrated.csv =====<<<<<\n')
     elif 'BARO' in finname:
         foutname = 'BARO_integrated.csv'
-        print('===== File name is BARO_integrated.csv =====\n')
+        print('>>>>>===== File name is BARO_integrated.csv =====<<<<<\n')
     else:
         foutname = 'Empty'
-        print('===== Check the file name =====\n')
+        print('>>>>>===== Check the file name =====<<<<<\n')
 
     # in the case if foutname file not exist,
     if not os.path.isfile(foutname):
@@ -529,7 +540,7 @@ def inwrite(finname, indata):
 
     # step 3. add updated data to the integrated file with sorting data according to datetime column
     mergedata = pd.concat([indata, exdata])
-    print('\nData merged and sorted\n')
+    print('Data merged and sorted\n')
     mergedata.sort_values(by='Datetime', inplace=True)
     # step 3.1. delete duplicated rows in terms of 'datetime'
     mergedata.drop_duplicates(['Datetime'])
@@ -546,6 +557,59 @@ def inwrite(finname, indata):
 
 
 # Metric functions 4/30/2023
+
+def timeseriescheck(finname):
+    
+    import pandas as pd
+    from datetime import datetime
+
+    if 'OUT' in finname:
+        foutname = 'OUT_integrated.csv'
+    elif 'ILA' in finname:
+        foutname = 'ILA_integrated.csv'
+    elif 'ILB' in finname:
+        foutname = 'ILB_integrated.csv'
+    elif 'CEN' in finname:
+        foutname = 'CEN_integrated.csv'
+    elif 'F63' in finname:
+        foutname = 'F63_integrated.csv'
+    elif 'BARO' in finname:
+        foutname = 'BARO_integrated.csv'
+    else:
+        foutname = 'Empty'
+        print("{:=^60}".format(' >> Check the file name << '))
+
+    # step 2. read existing data from foutname
+    if 'BARO' in foutname:
+        exdata = pd.read_csv(
+            foutname,
+            encoding='cp949',
+            sep=',',
+            names=['Datetime', 'ms', 'Pressure(kPa)', 'Temp(C)'],
+            skiprows=1)
+        # this encoding and separation is following solinst format
+    else:
+        exdata = pd.read_csv(
+            foutname,
+            encoding='cp949',
+            sep=',', names=['Datetime', 'ms', 'Level(m)', 'Temp(C)'],
+            skiprows=1)
+        # this encoding and separation is following solinst format
+
+    exdata['Datetime'] = pd.to_datetime(exdata['Datetime'],format='%Y-%m-%d %H:%M:%S')  # changed date column to the datetime format of the pandas for sorting
+    time_diff = exdata['Datetime'].diff()
+    time_list = exdata['Datetime'].values.tolist()
+    # calculate timedelta between each rows
+
+    print("{:=^60}".format(' Timeseries Check '))
+    # convert time delta to minute
+    for i in range(1,len(time_diff)):
+        gap = time_diff.iloc[i]
+        if gap > pd.Timedelta(days=1):
+            # 1677336300000000000 = timestamp
+            print('>>>',datetime.fromtimestamp(time_list[i-1]/1000000000),'and',datetime.fromtimestamp(time_list[i]/1000000000),'has',gap,'gap.')
+    print('\n\n')
+
 
 def CalcTqmean(Qvalues):
     """This function computes the Tqmean of a series of data, typically
