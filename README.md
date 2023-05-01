@@ -14,6 +14,7 @@ This is only for the major updates
 - 2023.04.20 Update for changing or the temporal interval to 5 min
 - 2023.04.20 Updated compensation function on the separate script 'comp_test.py'
 - 2023.04.21 Updated compensation function to move to 'comped_raw' folder after compensation
+- 2023.05.01 Working on the station code reading from the set_read function
 
 
 ### Next update

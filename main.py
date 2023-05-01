@@ -56,3 +56,6 @@ for i in updatelist:
 
         # implement timeseries check function to inspect empty space of the output data
         timeseriescheck(testin)
+        
+        print("{:=^60}".format(r+' Finished'))
+        print('\n\n\n')
