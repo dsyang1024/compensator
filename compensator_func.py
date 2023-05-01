@@ -19,6 +19,13 @@ readdata >> oldetector
 comp >> graphy
 intwrite
 
+
+----- Printing rules -----
+===== : starting new step
+>>>>> : checking the input
+----- : checkpoint during the process
+
+
 """
 from typing import List
 import os, sys, shutil
@@ -87,6 +94,72 @@ def graphy(finname, indata, xvar, y1var, y2var):
     plt.savefig(now.strftime('%Y-%m-%d') + '_' + title + '.png', dpi=500)  # saving figure
     plt.close()
     # plt.show()  # show graph
+
+
+def alloparms(stations):
+    '''
+    this function is generating parameters for the process of the script
+    input for this function is 'stations' and this will arrange the file lists
+    that will be referenced during the process
+    
+    Parameters
+    ----------
+    stations : string list
+        this parameter is the name of the stations.
+    oldlist : string list
+        this parameter is the name of files already in the history log
+    newlist : string list
+        this parameter is the name of files to be added to the history log(comped)
+    complist : string list
+        this parameter is the name of files to be comped
+
+    Returns
+    -------
+    oldlist, newlist, complist
+
+    '''
+    # make the empty list
+    oldlist = []
+    newlist = []
+    complist = []
+    
+    
+    # step 1. arrange the file  names in the history.log
+    try:
+        with open('history.log', 'r') as fhistory:
+            olddata_list = fhistory.readlines()
+        olddata_list = [i.replace('\n','') for i in olddata_list]
+        
+        print("{:=^60}".format(' Reading history log file '),end='\n\n')
+        # index [:-1] will make file name in the list without '\n'
+        for name in stations:
+            oldlist.append([i for i in olddata_list if name in i])
+    # if history file not exist, make one
+    except:
+        print('[Error 02] File does not exist and made a new file')
+        fhistory = open('history.log', 'w')
+        fhistory.close()
+                
+    
+    # step 2. arrange all the data in the data folder
+    data_list = os.listdir('data/')
+    # only for github .DS_Store file
+    if '.DS_Store' in data_list: data_list.remove('.DS_Store')
+    
+    # filter the data that are not in the history log
+    data_list = [i for i in data_list if i not in olddata_list]
+    for name in stations:
+        newlist.append([i for i in data_list if name+'_COMP' in i])
+
+
+    # step 3. arrange the data needs compensation
+    # list of file requires compensation
+    # remove compensated data
+    complist = [i for i in data_list if not 'COMP' in i]
+    # remove baro data
+    complist = [i for i in complist if not i.endswith('BARO.csv')]
+    
+    return oldlist, newlist, complist
 
 
 def comp(finname):
@@ -187,7 +260,7 @@ def comp(finname):
     shutil.move('data/' + finname, 'comped_raw_data/' + finname)
 
 
-def history():
+def history(stations):
     """_Summary_
         this function make history log file with file used for the compensation
         if the file read, it will be recorded to the history.log file in text format
@@ -196,6 +269,7 @@ def history():
         return value of function is list of the updated data file
 
     Args(*: input or output):
+        stations: list of stations name
 
     Returns:
          updatelist:
@@ -455,13 +529,24 @@ def set_read():
     Returns:
         htvars(list) : variables for the height
     """
-    with open('setting.comp', 'r') as f:
-        htvars = f.readlines()[2]
-        htvars: list[str] = htvars.split(',')
-        htvars = [float(i) for i in htvars]
-    print("{:=^60}".format(' Comp variables imported '))
-    print('\n')
-    return (htvars)
+    
+    station_info = []
+
+    for line in open('setting.comp', 'r'):
+        li=line.strip()
+        if not li.startswith("#"):
+            # split line into variables
+            temp = line.rstrip().split(',')
+            station_info.append(temp)
+
+    stations = station_info[0]
+    htvars = station_info[1]
+    
+    print("{:=^60}".format(' Compensation variables imported '))
+    print('>>> Total',len(stations),'stations imported')
+    print('>>>',' / '.join(stations),end='\n\n')
+    
+    return stations, htvars
 
 
 def inwrite(finname, indata):

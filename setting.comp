@@ -1,3 +1,10 @@
-Height variables(location of the loggers)
-OUT,ILA,ILB,CEN
-0.5,0.8,0.45,0.37
+# this is comment line
+#
+#Height variables(location of the loggers)
+#first line = name of the stations
+#second line = offset depth of the loggers for each stations
+#third line = Latitude of the station (UTM WGS 1984 16N)
+#Fourth line = Longitude of the station (UTM WGS 1984 16N)
+#
+OUT,ILA,ILB,CEN,F63,BARO
+0.5,0.8,0.45,0.37,0.5,0.6
