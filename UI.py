@@ -25,7 +25,7 @@ class App(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.title = 'PyQt5 Treeview Example - pythonspot.com'
+        self.title = 'PyQt5 Tutorial by DK'
         self.left = 10
         self.top = 10
         self.width = 800
@@ -58,7 +58,7 @@ class App(QWidget):
         self.addInfo(infomodel, 'Outlet', 'OUT','01/01/2023','Dr.Cherkauer','Working','4799955','438889')
 
         
-
+        
         # file directory viewer
         self.dirGroupBox = QGroupBox("DIR Viewer")
         self.model = QFileSystemModel()
@@ -73,7 +73,7 @@ class App(QWidget):
         dirLayout = QHBoxLayout()
         dirLayout.addWidget(self.tree)
         self.dirGroupBox.setLayout(dirLayout)
-
+        
 
         # add widgets to the layout vertically using QVBOXLayout
         mainLayout = QVBoxLayout()
@@ -83,6 +83,8 @@ class App(QWidget):
         
         self.setLayout(mainLayout)
         
+        
+        # show the window
         self.show()
 
     def createInfoModel(self,parent):
