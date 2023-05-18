@@ -2,6 +2,7 @@
 This is project for building compensator for the level loggers in the wetland projects.
 
 
+
 ## Update log
 This is only for the major updates
 >Minor updates will be addressed below for each functions
@@ -18,8 +19,11 @@ This is only for the major updates
 - 2023.05.17    File naming method has been automated and separate directory for image and integrated files
 
 
+
 ### Next update
+
 - Update or make a choiceable outlier method
+
 
 
 ## Draft of the project
@@ -37,6 +41,7 @@ This library is including multiple functions for compensation
 7. == baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
 8. *  oldetector : outlier detector for various situation
 9. *  set_read : this file will read environmental variables for the compensation
+
 
 
 ## System Flow
