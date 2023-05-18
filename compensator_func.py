@@ -287,6 +287,17 @@ def history(stations):
         data_list.remove('.DS_Store')
     except:
         pass
+    
+
+    filelistnames = []
+    for i in stations:
+        print(i)
+        exec("filelistnames.append('%s')" % (i+'file'))
+        exec("%s = [i for i in data_list if '%s' in i]" % (i+'file',i+'_COMP'))
+    print(filelistnames)
+    for i in filelistnames:
+        exec("print(%s)" % (i))
+
 
     # print(data_list)
     OUTfile = [i for i in data_list if 'OUT_COMP' in i]
