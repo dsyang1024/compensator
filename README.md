@@ -1,5 +1,6 @@
 # COMPENSATOR
 This is project for building compensator for the level loggers in the wetland projects.
+The loggers are the from Solinst and the detailed could be found from the manual pdf file.
 
 
 
