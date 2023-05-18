@@ -5,17 +5,17 @@ This is project for building compensator for the level loggers in the wetland pr
 ## Update log
 This is only for the major updates
 >Minor updates will be addressed below for each functions
-- 2023.02.05 Basic concept of the program designed
-- 2023.02.07 Reinforce the basic design of the program and update readme file
-- 2023.03.12 Updated readdata function to read all the data
-- 2023.03.22 Updated readdata function to convert barometric data with correct header
-- 2023.04.01 Graphy function updated
-- 2023.04.10 Bug fixed for history function while updating list of records
-- 2023.04.20 Update for changing or the temporal interval to 5 min
-- 2023.04.20 Updated compensation function on the separate script 'comp_test.py'
-- 2023.04.21 Updated compensation function to move to 'comped_raw' folder after compensation
-- 2023.05.01 Working on the station code reading from the set_read function
-- 2023.05.17 File naming method has been automated and separate directory for image and integrated files
+- 2023.02.05    Basic concept of the program designed
+- 2023.02.07    Reinforce the basic design of the program and update readme file
+- 2023.03.12    Updated readdata function to read all the data
+- 2023.03.22    Updated readdata function to convert barometric data with correct header
+- 2023.04.01    Graphy function updated
+- 2023.04.10    Bug fixed for history function while updating list of records
+- 2023.04.20    Update for changing or the temporal interval to 5 min
+- 2023.04.20    Updated compensation function on the separate script 'comp_test.py'
+- 2023.04.21    Updated compensation function to move to 'comped_raw' folder after compensation
+- 2023.05.01    Working on the station code reading from the set_read function
+- 2023.05.17    File naming method has been automated and separate directory for image and integrated files
 
 
 ### Next update
