@@ -91,7 +91,7 @@ def graphy(finname, indata, xvar, y1var, y2var):
     sns.lineplot(data=indata, x=xvar, y=y2var, color='salmon', ax=ax2, label=y2var)
     ax1.legend(labels=[y1var], loc=1)
     ax2.legend(labels=[y2var], loc=2)
-    plt.savefig(now.strftime('%Y-%m-%d') + '_' + title + '.png', dpi=500)  # saving figure
+    plt.savefig('graphs/'+now.strftime('%Y-%m-%d') + '_' + title + '.png', dpi=500)  # saving figure
     plt.close()
     # plt.show()  # show graph
 
@@ -130,7 +130,7 @@ def alloparms(stations):
             olddata_list = fhistory.readlines()
         olddata_list = [i.replace('\n','') for i in olddata_list]
         
-        print("{:=^60}".format(' Reading history log file '),end='\n\n')
+        print("{:=^60}".format(' Reading history log file '),end='\n')
         # index [:-1] will make file name in the list without '\n'
         for name in stations:
             oldlist.append([i for i in olddata_list if name in i])
@@ -149,8 +149,11 @@ def alloparms(stations):
     # filter the data that are not in the history log
     data_list = [i for i in data_list if i not in olddata_list]
     for name in stations:
-        newlist.append([i for i in data_list if name+'_COMP' in i])
-
+        if name == 'BARO':
+            newlist.append([i for i in data_list if name in i])
+        else:
+            newlist.append([i for i in data_list if name+'_COMP' in i])
+            
 
     # step 3. arrange the data needs compensation
     # list of file requires compensation
@@ -160,6 +163,7 @@ def alloparms(stations):
     complist = [i for i in complist if not i.endswith('BARO.csv')]
     
     return oldlist, newlist, complist
+
 
 
 def comp(finname):
@@ -173,7 +177,7 @@ def comp(finname):
 
     import pandas as pd
 
-    print('\n>>>', finname, 'Compensating ...')
+    print('>>>', finname, 'Compensating ...')
 
     Rawdata = pd.read_csv('data/' + finname,
                         encoding='cp949',
@@ -260,7 +264,8 @@ def comp(finname):
     shutil.move('data/' + finname, 'comped_raw_data/' + finname)
 
 
-def history(stations):
+
+def history(stations, oldlist, newlist, complist):
     """_Summary_
         this function make history log file with file used for the compensation
         if the file read, it will be recorded to the history.log file in text format
@@ -270,142 +275,61 @@ def history(stations):
 
     Args(*: input or output):
         stations: list of stations name
+        oldlist: list of old files already in the history file
+        newlist: list of new files need to be updated to the history file
 
     Returns:
-         updatelist:
-         (OUTfile, ILAfile, ILBfile, CENfile)(list): list of files need to be update for each station
-         compreq:
-         list of the files that need to be compensated
+        NONE.
+
     """
-    # TODO need to think about the method that can update the list every single files not all at once, it is really being picky for debugging
-    # 
 
-    # step 1. import all the data in the data folder
-    data_list = os.listdir('data/')
-    # only for github .DS_Store file
-    try:
-        data_list.remove('.DS_Store')
-    except:
-        pass
     
-
-    filelistnames = []
-    for i in stations:
-        print(i)
-        exec("filelistnames.append('%s')" % (i+'file'))
-        exec("%s = [i for i in data_list if '%s' in i]" % (i+'file',i+'_COMP'))
-    print(filelistnames)
-    for i in filelistnames:
-        exec("print(%s)" % (i))
-
-
-    # print(data_list)
-    OUTfile = [i for i in data_list if 'OUT_COMP' in i]
-    # print(OUTfile)
-    ILAfile = [i for i in data_list if 'ILA_COMP' in i]
-    # print(ILAfile)
-    ILBfile = [i for i in data_list if 'ILB_COMP' in i]
-    # print(ILBfile)
-    CENfile = [i for i in data_list if 'CEN_COMP' in i]
-    # print(CENfile)
-    F63file = [i for i in data_list if 'F63_COMP' in i]
-    # print(F63file)
-    BAROfile = [i for i in data_list if 'BARO' in i]
-    # print(BAROfile)
-
-    # list of file requires compensation
-    # remove compensated data
-    Compreq = [i for i in data_list if not 'COMP' in i]
-    # remove baro data
-    Compreq = [i for i in Compreq if not i.endswith('BARO.csv')]
-
-
-    # step 2. check the existance of the new file using history log
-    # Read history file, if it does not exist, make a new one
-    try:
-        with open('history.log', 'r') as fhistory:
-            olddata_list = fhistory.readlines()
-        print("{:=^60}".format(' Reading history log file '))
-        # index [:-1] will make file name in the list without '\n'
-        oldOUTfile = [i[:-1] for i in olddata_list if 'OUT' in i]
-        oldILAfile = [i[:-1] for i in olddata_list if 'ILA' in i]
-        oldILBfile = [i[:-1] for i in olddata_list if 'ILB' in i]
-        oldCENfile = [i[:-1] for i in olddata_list if 'CEN' in i]
-        oldF63file = [i[:-1] for i in olddata_list if 'F63' in i]
-        oldBAROfile = [i[:-1] for i in olddata_list if 'BARO' in i]
-
-
-        print('\n\n::: Previous Data status :::', '\nOUT :: ',
-              len(oldOUTfile), '\nILA :: ', len(oldILAfile), '\nILB :: ',
-              len(oldILBfile), '\nCEN :: ', len(oldCENfile), '\nF63 :: ',
-              len(oldF63file), '\nBARO :: ', len(oldBAROfile))
-    except:
-        print('[Error 02] File does not exist and made a new file')
-        fhistory = open('history.log', 'w')
-        fhistory.close()
-        # these empty list will prevent error when merging old/new lists below
-        oldOUTfile = []
-        oldILAfile = []
-        oldILBfile = []
-        oldCENfile = []
-        oldF63file = []
-        oldBAROfile = []
-
-    # Check there is new data or not for each station
-    # is OUTfile item is in the oldOUTfile list, it will be removed
-    OUTfile = [i for i in OUTfile if i not in oldOUTfile]
-    ILAfile = [i for i in ILAfile if i not in oldILAfile]
-    ILBfile = [i for i in ILBfile if i not in oldILBfile]
-    CENfile = [i for i in CENfile if i not in oldCENfile]
-    F63file = [i for i in F63file if i not in oldF63file]
-    BAROfile = [i for i in BAROfile if i not in oldBAROfile]
-
-    print('\n\n::: Updated Data status :::', '\nOUT :: ', len(OUTfile), '\nILA :: ', len(ILAfile), '\nILB :: ',
-          len(ILBfile), '\nCEN :: ', len(CENfile), '\nF63 :: ', len(BAROfile), '\nBARO :: ', len(BAROfile))
-
-    # step 3. make a new history log including updated file list
-    # merge old list and new list
-    newOUTfile = oldOUTfile + OUTfile
-    newOUTfile.sort()
-    newILAfile = oldILAfile + ILAfile
-    newILAfile.sort()
-    newILBfile = oldILBfile + ILBfile
-    newILBfile.sort()
-    newCENfile = oldCENfile + CENfile
-    newCENfile.sort()
-    newF63file = oldF63file + F63file
-    newF63file.sort()
-    newBAROfile = oldBAROfile + BAROfile
-    newBAROfile.sort()
-
-    # important! this line commented for testing
-    with open('history.log','w') as fhistory:
-        for i in [newOUTfile, newILAfile, newILBfile, newCENfile, newF63file, newBAROfile]:
-            for r in i:
-                fhistory.write(r)
-                fhistory.write('\n')
-            fhistory.write('\n\n')
-
+    # case 1. if there is nothing to update
     # show message about the update
-    if len(OUTfile)+len(ILAfile)+len(ILBfile)+len(CENfile)+len(BAROfile)+len(BAROfile)+len(Compreq) == 0:
-        print('\n===== All the files are already up-to-date ! =====\n')
+    if sum([len(i) for i in newlist])+len(complist) == 0:
+        print("{:=^60}".format(' All the files are already up-to-date '),end='\n\n')
         sys.exit()
+        
+    # case 2. if there is something to update
     else:
-        print('\n')
-        print(len(OUTfile) + len(ILAfile) + len(ILBfile) + len(CENfile) +
-            len(BAROfile) + len(BAROfile),'Files for integration')
-        print(len(Compreq),'Files for compensation')
-        print('\n')
-        print("{:=^60}".format(' History log file updated '))
+        # if there is files to integrate
+        if sum([len(i) for i in newlist]) > 0:
+            print("{:-^60}".format(' Integration required for %s files ' % (str(sum([len(i) for i in newlist])))),end='\n')
+            for stname in range(len(stations)):
+                print(stations[stname]+' :: ',len(newlist[stname]),end='\n')
+        
+            # make a new history log including updated file list
+            # merge old list and new list
+            merged_data = []
+            for index in range(len(stations)):
+                temp = oldlist[index]+newlist[index]
+                temp.sort()
+                merged_data.append(temp)
+            
+            
+            # important! this line commented for testing
+            with open('history.log','w') as fhistory:
+                for i in merged_data:
+                    for r in i:
+                        fhistory.write(r)
+                        fhistory.write('\n')
+                    fhistory.write('\n\n')
+                    
+        
+        else:
+            print("{:-^60}".format(' There is nothing to integrate '),end='\n')
+        
+        
+        # if there is files to compensate
+        if len(complist) > 0:
+            # if there is 
+            print("{:-^60}".format(' Compensation required for %s files ' % (str(len(complist)))),end='\n')
+            for compitem in complist:
+                print('>>>',compitem)
+            
+        else:
+            print("{:-^60}".format(' There is nothing to compensate '),end='\n')
 
-    # print compensation required file number and list
-    print(':: Compensation required ::\n', str(len(Compreq)),
-          'Files are needed for compensation ::\n')
-    for compitem in Compreq:
-        print(compitem)
-
-
-    return [OUTfile, ILAfile, ILBfile, CENfile, F63file, BAROfile], Compreq
 
 
 def readdata(finname):
@@ -455,6 +379,7 @@ def readdata(finname):
     return data
 
 
+
 def oldetector(indata):
     """_Summary
         this function is designed to detect outlier in the data file list
@@ -486,7 +411,6 @@ def oldetector(indata):
 
     print("{:-^60}".format(' Data Stats Analysis '))
     print(indata.describe())
-    print('\n')
 
     # outlier detection is only for level and ATM
     indexlist = indata.columns.to_list()
@@ -519,13 +443,14 @@ def oldetector(indata):
     rbindex = CalcRBindex(outdata['Level(m)'])
     sevenq = Calc7Q(outdata['Level(m)'])
     threemed = CalcExceed3TimesMedian(outdata['Level(m)'])
-    print('====================  Metric Analysis  =====================')
+    print("{:-^60}".format('Metric Analysis'))
     print("{:^15}|{:^15}|{:^15}|{:^15}".format('TQ-Mean','RB-Index','7Q Values','3X Median'))
     print("{:^15.3f}|{:^15.3f}|{:^15.3f}|{:^15}".format(tqmean, rbindex, sevenq,threemed))
-    print('============================================================\n')
+    print("{:-^60}".format(''))
 
     # return dataframe with outliers removed
     return outdata
+
 
 
 def set_read():
@@ -560,7 +485,8 @@ def set_read():
     return stations, htvars
 
 
-def inwrite(finname, indata):
+
+def inwrite(finname, indata, stations):
     """_Summary
         this funcion is making integrated file with the input data
         first, 'indata' is the dataframe with outliers removed. (returned from oldetector)
@@ -586,28 +512,12 @@ def inwrite(finname, indata):
     import pandas as pd
 
     # step 1. confirm foutname for writing result
-    # TODO 사용자가 지점이름을 직접입력하고 이를 나중에 리스트의 형태로 활용할 수  있도록 수정해보자
-    if 'OUT' in finname:
-        foutname = 'OUT_integrated.csv'
-        print('>>>>>===== File name is OUT_integrated.csv =====<<<<<\n')
-    elif 'ILA' in finname:
-        foutname = 'ILA_integrated.csv'
-        print('>>>>>===== File name is ILA_integrated.csv =====<<<<<\n')
-    elif 'ILB' in finname:
-        foutname = 'ILB_integrated.csv'
-        print('>>>>>===== File name is ILB_integrated.csv =====<<<<<\n')
-    elif 'CEN' in finname:
-        foutname = 'CEN_integrated.csv'
-        print('>>>>>===== File name is CEN_integrated.csv =====<<<<<\n')
-    elif 'F63' in finname:
-        foutname = 'F63_integrated.csv'
-        print('>>>>>===== File name is F63_integrated.csv =====<<<<<\n')
-    elif 'BARO' in finname:
-        foutname = 'BARO_integrated.csv'
-        print('>>>>>===== File name is BARO_integrated.csv =====<<<<<\n')
-    else:
-        foutname = 'Empty'
-        print('>>>>>===== Check the file name =====<<<<<\n')
+    # integrated files will be in 'integrated' folder
+
+    for name in stations:
+        if name in finname:
+            foutname = 'integrated/'+name+'_integrated.csv'
+    
 
     # in the case if foutname file not exist,
     if not os.path.isfile(foutname):
@@ -652,28 +562,17 @@ def inwrite(finname, indata):
 
 
 
+
 # Metric functions 4/30/2023
 
-def timeseriescheck(finname):
+def timeseriescheck(finname,stations):
     
     import pandas as pd
     from datetime import datetime
 
-    if 'OUT' in finname:
-        foutname = 'OUT_integrated.csv'
-    elif 'ILA' in finname:
-        foutname = 'ILA_integrated.csv'
-    elif 'ILB' in finname:
-        foutname = 'ILB_integrated.csv'
-    elif 'CEN' in finname:
-        foutname = 'CEN_integrated.csv'
-    elif 'F63' in finname:
-        foutname = 'F63_integrated.csv'
-    elif 'BARO' in finname:
-        foutname = 'BARO_integrated.csv'
-    else:
-        foutname = 'Empty'
-        print("{:=^60}".format(' >> Check the file name << '))
+    for name in stations:
+        if name in finname:
+            foutname = 'integrated/'+name+'_integrated.csv'
 
     # step 2. read existing data from foutname
     if 'BARO' in foutname:
@@ -698,13 +597,13 @@ def timeseriescheck(finname):
     # calculate timedelta between each rows
 
     print("{:=^60}".format(' Timeseries Check '))
+    
     # convert time delta to minute
     for i in range(1,len(time_diff)):
         gap = time_diff.iloc[i]
         if gap > pd.Timedelta(days=1):
             # 1677336300000000000 = timestamp
-            print('>>>',datetime.fromtimestamp(time_list[i-1]/1000000000),'and',datetime.fromtimestamp(time_list[i]/1000000000),'has',gap,'gap.')
-    print('\n\n')
+            print('>>>',datetime.fromtimestamp(time_list[i-1]/1000000000),'and',datetime.fromtimestamp(time_list[i]/1000000000),'has',gap,'gap.',end='\n\n')
 
 
 def CalcTqmean(Qvalues):

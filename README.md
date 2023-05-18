@@ -1,4 +1,4 @@
-# compensator
+# COMPENSATOR
 This is project for building compensator for the level loggers in the wetland projects.
 
 
@@ -15,10 +15,11 @@ This is only for the major updates
 - 2023.04.20 Updated compensation function on the separate script 'comp_test.py'
 - 2023.04.21 Updated compensation function to move to 'comped_raw' folder after compensation
 - 2023.05.01 Working on the station code reading from the set_read function
+- 2023.05.17 File naming method has been automated and separate directory for image and integrated files
 
 
 ### Next update
-- make separate directory for image and integrated files
+- Update or make a choiceable outlier method
 
 
 ## Draft of the project
@@ -36,6 +37,7 @@ This library is including multiple functions for compensation
 7. == baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
 8. *  oldetector : outlier detector for various situation
 9. *  set_read : this file will read environmental variables for the compensation
+
 
 ## System Flow
 |Step|Function name|What they do?|

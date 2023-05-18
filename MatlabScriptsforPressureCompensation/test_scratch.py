@@ -39,6 +39,6 @@ stations, htvars = set_read()
 # make the lsit of the file
 oldlist, newlist, complist = alloparms(stations)
 
+history(stations, oldlist, newlist, complist)
 
-print('//////////////////')
-history(stations)
+
