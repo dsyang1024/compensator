@@ -1,5 +1,14 @@
 from typing import List
 import os, sys, shutil
+from datetime import date
+
+
+PIC = input('Person in charge of the data :: ')
+if PIC == '':
+    PIC = input('Again, "Person in charge of the data" :: ')
+else:
+    print('    Person in Charge:',PIC,'\n','   Date:', date.today(),end='\n\n')
+
 
 try:
     from compensator_func import *
@@ -82,5 +91,9 @@ for i in newlist:
 
         # implement timeseries check function to inspect empty space of the output data
         timeseriescheck(testin,stations)
+
+
+receipt(PIC,stations,newlist)
+os.system('pause')
                 
         

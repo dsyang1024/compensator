@@ -289,6 +289,8 @@ def history(stations, oldlist, newlist, complist):
     # show message about the update
     if sum([len(i) for i in newlist])+len(complist) == 0:
         print("{:=^60}".format(' All the files are already up-to-date '),end='\n\n')
+        print("{:*^60}".format(' Process Finished. BYE-BYE '),end='\n\n')
+        os.system('pause')
         sys.exit()
         
     # case 2. if there is something to update
@@ -547,7 +549,7 @@ def inwrite(finname, indata, stations):
 
     # step 3. add updated data to the integrated file with sorting data according to datetime column
     mergedata = pd.concat([indata, exdata])
-    print('Data merged and sorted\n')
+    print('Data merged and sorted')
     mergedata.sort_values(by='Datetime', inplace=True)
     # step 3.1. delete duplicated rows in terms of 'datetime'
     mergedata.drop_duplicates(['Datetime'])
@@ -560,6 +562,39 @@ def inwrite(finname, indata, stations):
         graphy(foutname, mergedata, 'Datetime', 'Pressure(kPa)', 'Temp(C)')
     else:
         graphy(foutname, mergedata, 'Datetime', 'Level(m)', 'Temp(C)')
+
+
+
+def receipt(PIC,stations,newlist):
+    """
+    refer: https://www.educative.io/answers/how-to-write-text-on-an-image-in-python
+
+    Returns
+    -------
+    None.
+
+    """
+    
+    from PIL import Image, ImageDraw, ImageFont
+    img = Image.open("Receipt_Picture.png")
+    draw = ImageDraw.Draw(img)
+    today = str(date.today())
+    
+    txt = PIC+'        '+today
+    draw.text((40, 80), txt, fill =(0, 0, 0))
+    
+    yaxis = 80
+    
+    for i in range(len(stations)):
+        yaxis = yaxis+15
+        txt = stations[i]
+        draw.text((40, yaxis), txt, fill =(0, 0, 0))
+        for r in newlist[i]:
+            yaxis = yaxis+10
+            txt = r
+            draw.text((40, yaxis), txt, fill =(0, 0, 0))
+    img.save('receipt/'+today+'_'+PIC+'.png')
+    img.show()
 
 
 
@@ -598,7 +633,7 @@ def timeseriescheck(finname,stations):
     time_list = exdata['Datetime'].values.tolist()
     # calculate timedelta between each rows
 
-    print("{:=^60}".format(' Timeseries Check '))
+    print("{:.^40}".format(' Timeseries Check '))
     
     # convert time delta to minute
     for i in range(1,len(time_diff)):
