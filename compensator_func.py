@@ -1,4 +1,10 @@
 """
+Github Branch list
+1. Dist : Merging and Distribution
+2. Master : Backup for the Distribution version
+3. Each version: Savings for the each version
+
+
 This library is including multiple functions for compensation
 * done // *= needs to be modified // == needs more idea and plan
 1. * graphy : draw graph for the data from pandas dataframe
