@@ -1,6 +1,7 @@
 # COMPENSATOR
 This is project for building compensator for the level loggers in the wetland projects.
 The loggers are the from Solinst and the detailed could be found from the manual pdf file.
+The github link includes all the version and explanation about the structure.
 
 
 
@@ -25,6 +26,7 @@ This is only for the major updates
 ### Next update
 
 - Update or make a choiceable outlier method
+- Check versatility on the Windows 11 system
 
 
 
