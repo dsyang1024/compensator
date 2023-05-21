@@ -18,6 +18,7 @@ This is only for the major updates
 - 2023.04.21    Updated compensation function to move to 'comped_raw' folder after compensation
 - 2023.05.01    Working on the station code reading from the set_read function
 - 2023.05.17    File naming method has been automated and separate directory for image and integrated files
+- 2023.05.21    'Receipt' function added. Now after running the program, user will receive receipt with the name of stations and individual files in the receipt
 
 
 
@@ -32,8 +33,9 @@ This is only for the major updates
 This library is including multiple functions for compensation
 
 * done // *= needs to be modified // == needs more idea and plan
-1. * graphy : draw graph for the data from pandas dataframe
-2. *  history : update history.log file for future management of the data files
+0. * graphy : draw graph for the data from pandas dataframe
+1. * history : update history.log file for future management of the data files
+2. * alloparm : read station names and update the list of the files need to be updated
 3. * readdata : read data file, make it as dataframe format
 4. * intwrite : read all the compensated data, write it to the integrated file
 5. * comp : compensation function for the loggers using baro
@@ -42,17 +44,18 @@ This library is including multiple functions for compensation
 7. == baro_cali : calibrate baro values(pressure) of the field, using one from purdue airport station
 8. *  oldetector : outlier detector for various situation
 9. *  set_read : this file will read environmental variables for the compensation
+10. * receipt : this funciton will give you the receipt of the process files and person in charge
 
 
 
 ## System Flow
 |Step|Function name|What they do?|
 |:---:|:---:|:---:|
-|테스트1|테스트2|테스트3|
-|테스트1|테스트2|테스트3|
-|테스트1|테스트2|테스트3|
+|1|Graphy|This will deliver the graph for the user in time-seires|
+|1|Alloparm|This function will allocate parameters 'station names', 'update lists'|
+|1|History|This function will arrange file names in the hitory.log|
 
-- step 1. history / set_read
+- step 1. alloparm / history / set_read
 - step 2. Baro_crawler >> baro_cali
 - step 3. readdata >> oldetector
 - step 4. comp >> graphy
