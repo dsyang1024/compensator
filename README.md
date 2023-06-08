@@ -20,7 +20,7 @@ This is only for the major updates
 - 2023.05.01    Working on the station code reading from the set_read function
 - 2023.05.17    File naming method has been automated and separate directory for image and integrated files
 - 2023.05.21    'Receipt' function added. Now after running the program, user will receive receipt with the name of stations and individual files in the receipt
-
+- 2023.06.08    'Receipt' function minor update
 
 
 ### Next update
