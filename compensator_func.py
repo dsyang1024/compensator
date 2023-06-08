@@ -582,6 +582,8 @@ def receipt(PIC,stations,newlist):
     """
     
     from PIL import Image, ImageDraw, ImageFont
+    from datetime import date
+
     img = Image.open("Receipt_Picture.png")
     draw = ImageDraw.Draw(img)
     today = str(date.today())
