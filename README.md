@@ -56,6 +56,13 @@ This library is including multiple functions for compensation
 |1|Graphy|This will deliver the graph for the user in time-seires|
 |1|Alloparm|This function will allocate parameters 'station names', 'update lists'|
 |1|History|This function will arrange file names in the hitory.log|
+|2|Comp|This function compensate the data that are not on  the history log|
+|2|Oldetector|This function captures outlier from the compensated data and exclude them from the data|
+|3|Intwrite|This function makes integrated files for each stations, if there is no integration file, it will make a new file|
+|3|Receipt|This function makes receipt with name, date and the data processed|
+
+
+
 
 - step 1. alloparm / history / set_read
 - step 2. Baro_crawler >> baro_cali
