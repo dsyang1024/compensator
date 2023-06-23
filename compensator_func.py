@@ -394,9 +394,10 @@ def oldetector(indata):
         this function is designed to detect outlier in the data file list
         for this, this fucntion is analyzing two types of outlier
             1. global outlier
-            this is an outlier that exist out of min-max range of the data
+                this is an outlier that exist out of min-max range of the data
             2. contextual outliers
-            this is an outlier that exist within min-max range but sudden increase or decrease of the data
+                this is an outlier that exist within min-max range 
+                but sudden increase or decrease of the data
         all of this outliers can be easily found through plotting the graph
         after detecting outlier, the data will be removed
 
