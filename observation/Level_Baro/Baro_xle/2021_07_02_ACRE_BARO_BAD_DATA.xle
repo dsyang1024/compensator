@@ -1,0 +1,1306 @@
+<?xml version="1.0" ?>
+<Body_xle>
+    <File_info>
+        <Company></Company>
+        <LICENCE></LICENCE>
+        <Date>2021/07/02</Date>
+        <Time>10:42:49</Time>
+        <FileName></FileName>
+        <Created_by>Version 4.1.0</Created_by>
+    </File_info>
+    <Instrument_info>
+        <Instrument_type>LT_EDGE</Instrument_type>
+        <Model_number>M1.5</Model_number>
+        <Instrument_state>Stopped</Instrument_state>
+        <Serial_number>2036527</Serial_number>
+        <Battery_level>100</Battery_level>
+        <Channel>2</Channel>
+        <Firmware>3.004</Firmware>
+    </Instrument_info>
+    <Instrument_info_data_header>
+        <Project_ID>ACRE Wetland</Project_ID>
+        <Location>Barologger Center</Location>
+        <Latitude>0.000</Latitude>
+        <Longtitude>0.000</Longtitude>
+        <Sample_rate>90000</Sample_rate>
+        <Sample_mode>0</Sample_mode>
+        <Event_ch>0</Event_ch>
+        <Event_threshold>-999999.000000</Event_threshold>
+        <Schedule />
+        <Start_time>2021/06/30 13:45:00</Start_time>
+        <Stop_time>2021/07/02 10:32:14</Stop_time>
+        <Num_log>180</Num_log>
+    </Instrument_info_data_header>
+    <Ch1_data_header>
+        <Identification>LEVEL</Identification>
+        <Unit>kPa</Unit>
+        <Parameters />
+    </Ch1_data_header>
+    <Ch2_data_header>
+        <Identification>TEMPERATURE</Identification>
+        <Unit>°C</Unit>
+        <Parameters />
+    </Ch2_data_header>
+    <Data>
+        <Log id="1">
+            <Date>2021/06/30</Date>
+            <Time>13:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.5282</ch1>
+            <ch2>27.633</ch2>
+        </Log>
+        <Log id="2">
+            <Date>2021/06/30</Date>
+            <Time>14:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.4867</ch1>
+            <ch2>24.894</ch2>
+        </Log>
+        <Log id="3">
+            <Date>2021/06/30</Date>
+            <Time>14:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.4507</ch1>
+            <ch2>24.076</ch2>
+        </Log>
+        <Log id="4">
+            <Date>2021/06/30</Date>
+            <Time>14:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.4486</ch1>
+            <ch2>23.781</ch2>
+        </Log>
+        <Log id="5">
+            <Date>2021/06/30</Date>
+            <Time>14:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.4537</ch1>
+            <ch2>23.450</ch2>
+        </Log>
+        <Log id="6">
+            <Date>2021/06/30</Date>
+            <Time>15:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.4404</ch1>
+            <ch2>23.449</ch2>
+        </Log>
+        <Log id="7">
+            <Date>2021/06/30</Date>
+            <Time>15:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.4288</ch1>
+            <ch2>23.311</ch2>
+        </Log>
+        <Log id="8">
+            <Date>2021/06/30</Date>
+            <Time>15:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.4320</ch1>
+            <ch2>23.150</ch2>
+        </Log>
+        <Log id="9">
+            <Date>2021/06/30</Date>
+            <Time>15:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.4251</ch1>
+            <ch2>23.089</ch2>
+        </Log>
+        <Log id="10">
+            <Date>2021/06/30</Date>
+            <Time>16:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.4169</ch1>
+            <ch2>23.002</ch2>
+        </Log>
+        <Log id="11">
+            <Date>2021/06/30</Date>
+            <Time>16:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.3930</ch1>
+            <ch2>23.087</ch2>
+        </Log>
+        <Log id="12">
+            <Date>2021/06/30</Date>
+            <Time>16:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.3837</ch1>
+            <ch2>23.240</ch2>
+        </Log>
+        <Log id="13">
+            <Date>2021/06/30</Date>
+            <Time>16:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.3692</ch1>
+            <ch2>23.344</ch2>
+        </Log>
+        <Log id="14">
+            <Date>2021/06/30</Date>
+            <Time>17:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.3433</ch1>
+            <ch2>23.349</ch2>
+        </Log>
+        <Log id="15">
+            <Date>2021/06/30</Date>
+            <Time>17:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.3223</ch1>
+            <ch2>23.592</ch2>
+        </Log>
+        <Log id="16">
+            <Date>2021/06/30</Date>
+            <Time>17:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.3076</ch1>
+            <ch2>24.093</ch2>
+        </Log>
+        <Log id="17">
+            <Date>2021/06/30</Date>
+            <Time>17:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.2967</ch1>
+            <ch2>24.636</ch2>
+        </Log>
+        <Log id="18">
+            <Date>2021/06/30</Date>
+            <Time>18:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.2779</ch1>
+            <ch2>24.728</ch2>
+        </Log>
+        <Log id="19">
+            <Date>2021/06/30</Date>
+            <Time>18:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.2731</ch1>
+            <ch2>24.699</ch2>
+        </Log>
+        <Log id="20">
+            <Date>2021/06/30</Date>
+            <Time>18:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.2566</ch1>
+            <ch2>24.937</ch2>
+        </Log>
+        <Log id="21">
+            <Date>2021/06/30</Date>
+            <Time>18:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.2596</ch1>
+            <ch2>24.810</ch2>
+        </Log>
+        <Log id="22">
+            <Date>2021/06/30</Date>
+            <Time>19:00:00</Time>
+            <ms>0</ms>
+            <ch1>479916.0000</ch1>
+            <ch2>24.525</ch2>
+        </Log>
+        <Log id="23">
+            <Date>2021/06/30</Date>
+            <Time>19:15:00</Time>
+            <ms>0</ms>
+            <ch1>21.7766</ch1>
+            <ch2>872.194</ch2>
+        </Log>
+        <Log id="24">
+            <Date>2021/06/30</Date>
+            <Time>19:30:00</Time>
+            <ms>0</ms>
+            <ch1>74205.1016</ch1>
+            <ch2>-6.100</ch2>
+        </Log>
+        <Log id="25">
+            <Date>2021/06/30</Date>
+            <Time>19:45:00</Time>
+            <ms>0</ms>
+            <ch1>-9.3866</ch1>
+            <ch2>857.610</ch2>
+        </Log>
+        <Log id="26">
+            <Date>2021/06/30</Date>
+            <Time>20:00:00</Time>
+            <ms>0</ms>
+            <ch1>-610970.0000</ch1>
+            <ch2>80.666</ch2>
+        </Log>
+        <Log id="27">
+            <Date>2021/06/30</Date>
+            <Time>20:15:00</Time>
+            <ms>0</ms>
+            <ch1>0.0939</ch1>
+            <ch2>-0.028</ch2>
+        </Log>
+        <Log id="28">
+            <Date>2021/06/30</Date>
+            <Time>20:30:00</Time>
+            <ms>0</ms>
+            <ch1>-3488.1199</ch1>
+            <ch2>-87219.500</ch2>
+        </Log>
+        <Log id="29">
+            <Date>2021/06/30</Date>
+            <Time>20:45:00</Time>
+            <ms>0</ms>
+            <ch1>-6109.2998</ch1>
+            <ch2>-8066.600</ch2>
+        </Log>
+        <Log id="30">
+            <Date>2021/06/30</Date>
+            <Time>21:00:00</Time>
+            <ms>0</ms>
+            <ch1>-873030.0000</ch1>
+            <ch2>0.020</ch2>
+        </Log>
+        <Log id="31">
+            <Date>2021/06/30</Date>
+            <Time>21:15:00</Time>
+            <ms>0</ms>
+            <ch1>2176.4399</ch1>
+            <ch2>100326.805</ch2>
+        </Log>
+        <Log id="32">
+            <Date>2021/06/30</Date>
+            <Time>21:30:00</Time>
+            <ms>0</ms>
+            <ch1>-414198.0000</ch1>
+            <ch2>-741.123</ch2>
+        </Log>
+        <Log id="33">
+            <Date>2021/06/30</Date>
+            <Time>21:45:00</Time>
+            <ms>0</ms>
+            <ch1>-348599.0000</ch1>
+            <ch2>-0.348</ch2>
+        </Log>
+        <Log id="34">
+            <Date>2021/06/30</Date>
+            <Time>22:00:00</Time>
+            <ms>0</ms>
+            <ch1>-0.1520</ch1>
+            <ch2>-8.067</ch2>
+        </Log>
+        <Log id="35">
+            <Date>2021/06/30</Date>
+            <Time>22:15:00</Time>
+            <ms>0</ms>
+            <ch1>8.0730</ch1>
+            <ch2>0.061</ch2>
+        </Log>
+        <Log id="36">
+            <Date>2021/06/30</Date>
+            <Time>22:30:00</Time>
+            <ms>0</ms>
+            <ch1>-2729.6001</ch1>
+            <ch2>-0.081</ch2>
+        </Log>
+        <Log id="37">
+            <Date>2021/06/30</Date>
+            <Time>22:45:00</Time>
+            <ms>0</ms>
+            <ch1>6759.5298</ch1>
+            <ch2>7.411</ch2>
+        </Log>
+        <Log id="38">
+            <Date>2021/06/30</Date>
+            <Time>23:00:00</Time>
+            <ms>0</ms>
+            <ch1>0.6760</ch1>
+            <ch2>-0.676</ch2>
+        </Log>
+        <Log id="39">
+            <Date>2021/06/30</Date>
+            <Time>23:15:00</Time>
+            <ms>0</ms>
+            <ch1>6.8282</ch1>
+            <ch2>-47897.801</ch2>
+        </Log>
+        <Log id="40">
+            <Date>2021/06/30</Date>
+            <Time>23:30:00</Time>
+            <ms>0</ms>
+            <ch1>0.0938</ch1>
+            <ch2>-34.791</ch2>
+        </Log>
+        <Log id="41">
+            <Date>2021/06/30</Date>
+            <Time>23:45:00</Time>
+            <ms>0</ms>
+            <ch1>29.0591</ch1>
+            <ch2>0.610</ch2>
+        </Log>
+        <Log id="42">
+            <Date>2021/07/01</Date>
+            <Time>00:00:00</Time>
+            <ms>0</ms>
+            <ch1>7418.1196</ch1>
+            <ch2>0.002</ch2>
+        </Log>
+        <Log id="43">
+            <Date>2021/07/01</Date>
+            <Time>00:15:00</Time>
+            <ms>0</ms>
+            <ch1>-0.8649</ch1>
+            <ch2>-8575.800</ch2>
+        </Log>
+        <Log id="44">
+            <Date>2021/07/01</Date>
+            <Time>00:30:00</Time>
+            <ms>0</ms>
+            <ch1>4141.0698</ch1>
+            <ch2>-741116.000</ch2>
+        </Log>
+        <Log id="45">
+            <Date>2021/07/01</Date>
+            <Time>00:45:00</Time>
+            <ms>0</ms>
+            <ch1>5.5263</ch1>
+            <ch2>-34789.902</ch2>
+        </Log>
+        <Log id="46">
+            <Date>2021/07/01</Date>
+            <Time>01:00:00</Time>
+            <ms>0</ms>
+            <ch1>-683726.0000</ch1>
+            <ch2>0.348</ch2>
+        </Log>
+        <Log id="47">
+            <Date>2021/07/01</Date>
+            <Time>01:15:00</Time>
+            <ms>0</ms>
+            <ch1>-80730.8984</ch1>
+            <ch2>0.020</ch2>
+        </Log>
+        <Log id="48">
+            <Date>2021/07/01</Date>
+            <Time>01:30:00</Time>
+            <ms>0</ms>
+            <ch1>-80.7389</ch1>
+            <ch2>80665.102</ch2>
+        </Log>
+        <Log id="49">
+            <Date>2021/07/01</Date>
+            <Time>01:45:00</Time>
+            <ms>0</ms>
+            <ch1>-938489.0000</ch1>
+            <ch2>4134.340</ch2>
+        </Log>
+        <Log id="50">
+            <Date>2021/07/01</Date>
+            <Time>02:00:00</Time>
+            <ms>0</ms>
+            <ch1>-0.0873</ch1>
+            <ch2>-0.022</ch2>
+        </Log>
+        <Log id="51">
+            <Date>2021/07/01</Date>
+            <Time>02:15:00</Time>
+            <ms>0</ms>
+            <ch1>158272.0000</ch1>
+            <ch2>0.479</ch2>
+        </Log>
+        <Log id="52">
+            <Date>2021/07/01</Date>
+            <Time>02:30:00</Time>
+            <ms>0</ms>
+            <ch1>-0.0272</ch1>
+            <ch2>-0.087</ch2>
+        </Log>
+        <Log id="53">
+            <Date>2021/07/01</Date>
+            <Time>02:45:00</Time>
+            <ms>0</ms>
+            <ch1>-6104.8799</ch1>
+            <ch2>675571.000</ch2>
+        </Log>
+        <Log id="54">
+            <Date>2021/07/01</Date>
+            <Time>03:00:00</Time>
+            <ms>0</ms>
+            <ch1>-0.0414</ch1>
+            <ch2>9.377</ch2>
+        </Log>
+        <Log id="55">
+            <Date>2021/07/01</Date>
+            <Time>03:15:00</Time>
+            <ms>0</ms>
+            <ch1>-1.0037</ch1>
+            <ch2>21.681</ch2>
+        </Log>
+        <Log id="56">
+            <Date>2021/07/01</Date>
+            <Time>03:30:00</Time>
+            <ms>0</ms>
+            <ch1>-0.0021</ch1>
+            <ch2>-8066.380</ch2>
+        </Log>
+        <Log id="57">
+            <Date>2021/07/01</Date>
+            <Time>03:45:00</Time>
+            <ms>0</ms>
+            <ch1>-0.0021</ch1>
+            <ch2>100324.398</ch2>
+        </Log>
+        <Log id="58">
+            <Date>2021/07/01</Date>
+            <Time>04:00:00</Time>
+            <ms>0</ms>
+            <ch1>4.7933</ch1>
+            <ch2>-282.348</ch2>
+        </Log>
+        <Log id="59">
+            <Date>2021/07/01</Date>
+            <Time>04:15:00</Time>
+            <ms>0</ms>
+            <ch1>0.2828</ch1>
+            <ch2>1512.750</ch2>
+        </Log>
+        <Log id="60">
+            <Date>2021/07/01</Date>
+            <Time>04:30:00</Time>
+            <ms>0</ms>
+            <ch1>-8726.0801</ch1>
+            <ch2>-937706.000</ch2>
+        </Log>
+        <Log id="61">
+            <Date>2021/07/01</Date>
+            <Time>04:45:00</Time>
+            <ms>0</ms>
+            <ch1>-616633.0000</ch1>
+            <ch2>-8.066</ch2>
+        </Log>
+        <Log id="62">
+            <Date>2021/07/01</Date>
+            <Time>05:00:00</Time>
+            <ms>0</ms>
+            <ch1>-101.0486</ch1>
+            <ch2>-0.074</ch2>
+        </Log>
+        <Log id="63">
+            <Date>2021/07/01</Date>
+            <Time>05:15:00</Time>
+            <ms>0</ms>
+            <ch1>35541.6016</ch1>
+            <ch2>-1003240.000</ch2>
+        </Log>
+        <Log id="64">
+            <Date>2021/07/01</Date>
+            <Time>05:30:00</Time>
+            <ms>0</ms>
+            <ch1>0.1591</ch1>
+            <ch2>-0.028</ch2>
+        </Log>
+        <Log id="65">
+            <Date>2021/07/01</Date>
+            <Time>05:45:00</Time>
+            <ms>0</ms>
+            <ch1>98.9754</ch1>
+            <ch2>19.258</ch2>
+        </Log>
+        <Log id="66">
+            <Date>2021/07/01</Date>
+            <Time>06:00:00</Time>
+            <ms>0</ms>
+            <ch1>98.9676</ch1>
+            <ch2>19.226</ch2>
+        </Log>
+        <Log id="67">
+            <Date>2021/07/01</Date>
+            <Time>06:15:00</Time>
+            <ms>0</ms>
+            <ch1>98.9481</ch1>
+            <ch2>19.446</ch2>
+        </Log>
+        <Log id="68">
+            <Date>2021/07/01</Date>
+            <Time>06:30:00</Time>
+            <ms>0</ms>
+            <ch1>98.9725</ch1>
+            <ch2>19.451</ch2>
+        </Log>
+        <Log id="69">
+            <Date>2021/07/01</Date>
+            <Time>06:45:00</Time>
+            <ms>0</ms>
+            <ch1>98.9755</ch1>
+            <ch2>19.648</ch2>
+        </Log>
+        <Log id="70">
+            <Date>2021/07/01</Date>
+            <Time>07:00:00</Time>
+            <ms>0</ms>
+            <ch1>98.9875</ch1>
+            <ch2>19.856</ch2>
+        </Log>
+        <Log id="71">
+            <Date>2021/07/01</Date>
+            <Time>07:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.0020</ch1>
+            <ch2>19.978</ch2>
+        </Log>
+        <Log id="72">
+            <Date>2021/07/01</Date>
+            <Time>07:30:00</Time>
+            <ms>0</ms>
+            <ch1>98.9976</ch1>
+            <ch2>20.174</ch2>
+        </Log>
+        <Log id="73">
+            <Date>2021/07/01</Date>
+            <Time>07:45:00</Time>
+            <ms>0</ms>
+            <ch1>98.9980</ch1>
+            <ch2>20.416</ch2>
+        </Log>
+        <Log id="74">
+            <Date>2021/07/01</Date>
+            <Time>08:00:00</Time>
+            <ms>0</ms>
+            <ch1>98.9924</ch1>
+            <ch2>20.741</ch2>
+        </Log>
+        <Log id="75">
+            <Date>2021/07/01</Date>
+            <Time>08:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.0034</ch1>
+            <ch2>21.063</ch2>
+        </Log>
+        <Log id="76">
+            <Date>2021/07/01</Date>
+            <Time>08:30:00</Time>
+            <ms>0</ms>
+            <ch1>98.9751</ch1>
+            <ch2>21.547</ch2>
+        </Log>
+        <Log id="77">
+            <Date>2021/07/01</Date>
+            <Time>08:45:00</Time>
+            <ms>0</ms>
+            <ch1>98.9892</ch1>
+            <ch2>21.836</ch2>
+        </Log>
+        <Log id="78">
+            <Date>2021/07/01</Date>
+            <Time>09:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.0007</ch1>
+            <ch2>22.424</ch2>
+        </Log>
+        <Log id="79">
+            <Date>2021/07/01</Date>
+            <Time>09:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.0145</ch1>
+            <ch2>23.162</ch2>
+        </Log>
+        <Log id="80">
+            <Date>2021/07/01</Date>
+            <Time>09:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.0218</ch1>
+            <ch2>22.743</ch2>
+        </Log>
+        <Log id="81">
+            <Date>2021/07/01</Date>
+            <Time>09:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.0442</ch1>
+            <ch2>22.147</ch2>
+        </Log>
+        <Log id="82">
+            <Date>2021/07/01</Date>
+            <Time>10:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.0615</ch1>
+            <ch2>22.308</ch2>
+        </Log>
+        <Log id="83">
+            <Date>2021/07/01</Date>
+            <Time>10:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.0658</ch1>
+            <ch2>22.564</ch2>
+        </Log>
+        <Log id="84">
+            <Date>2021/07/01</Date>
+            <Time>10:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.0578</ch1>
+            <ch2>22.758</ch2>
+        </Log>
+        <Log id="85">
+            <Date>2021/07/01</Date>
+            <Time>10:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.0461</ch1>
+            <ch2>23.376</ch2>
+        </Log>
+        <Log id="86">
+            <Date>2021/07/01</Date>
+            <Time>11:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.0487</ch1>
+            <ch2>24.004</ch2>
+        </Log>
+        <Log id="87">
+            <Date>2021/07/01</Date>
+            <Time>11:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.0399</ch1>
+            <ch2>24.411</ch2>
+        </Log>
+        <Log id="88">
+            <Date>2021/07/01</Date>
+            <Time>11:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.0371</ch1>
+            <ch2>25.335</ch2>
+        </Log>
+        <Log id="89">
+            <Date>2021/07/01</Date>
+            <Time>11:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.0397</ch1>
+            <ch2>25.990</ch2>
+        </Log>
+        <Log id="90">
+            <Date>2021/07/01</Date>
+            <Time>12:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.0434</ch1>
+            <ch2>26.919</ch2>
+        </Log>
+        <Log id="91">
+            <Date>2021/07/01</Date>
+            <Time>12:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.0456</ch1>
+            <ch2>26.038</ch2>
+        </Log>
+        <Log id="92">
+            <Date>2021/07/01</Date>
+            <Time>12:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.0195</ch1>
+            <ch2>27.839</ch2>
+        </Log>
+        <Log id="93">
+            <Date>2021/07/01</Date>
+            <Time>12:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.0275</ch1>
+            <ch2>28.328</ch2>
+        </Log>
+        <Log id="94">
+            <Date>2021/07/01</Date>
+            <Time>13:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.0038</ch1>
+            <ch2>29.059</ch2>
+        </Log>
+        <Log id="95">
+            <Date>2021/07/01</Date>
+            <Time>13:15:00</Time>
+            <ms>0</ms>
+            <ch1>98.9952</ch1>
+            <ch2>29.904</ch2>
+        </Log>
+        <Log id="96">
+            <Date>2021/07/01</Date>
+            <Time>13:30:00</Time>
+            <ms>0</ms>
+            <ch1>98.9706</ch1>
+            <ch2>30.268</ch2>
+        </Log>
+        <Log id="97">
+            <Date>2021/07/01</Date>
+            <Time>13:45:00</Time>
+            <ms>0</ms>
+            <ch1>98.9748</ch1>
+            <ch2>30.815</ch2>
+        </Log>
+        <Log id="98">
+            <Date>2021/07/01</Date>
+            <Time>14:00:00</Time>
+            <ms>0</ms>
+            <ch1>98.9592</ch1>
+            <ch2>31.403</ch2>
+        </Log>
+        <Log id="99">
+            <Date>2021/07/01</Date>
+            <Time>14:15:00</Time>
+            <ms>0</ms>
+            <ch1>98.9624</ch1>
+            <ch2>31.592</ch2>
+        </Log>
+        <Log id="100">
+            <Date>2021/07/01</Date>
+            <Time>14:30:00</Time>
+            <ms>0</ms>
+            <ch1>98.9499</ch1>
+            <ch2>31.860</ch2>
+        </Log>
+        <Log id="101">
+            <Date>2021/07/01</Date>
+            <Time>14:45:00</Time>
+            <ms>0</ms>
+            <ch1>98.9385</ch1>
+            <ch2>32.130</ch2>
+        </Log>
+        <Log id="102">
+            <Date>2021/07/01</Date>
+            <Time>15:00:00</Time>
+            <ms>0</ms>
+            <ch1>98.9343</ch1>
+            <ch2>32.695</ch2>
+        </Log>
+        <Log id="103">
+            <Date>2021/07/01</Date>
+            <Time>15:15:00</Time>
+            <ms>0</ms>
+            <ch1>98.9197</ch1>
+            <ch2>33.106</ch2>
+        </Log>
+        <Log id="104">
+            <Date>2021/07/01</Date>
+            <Time>15:30:00</Time>
+            <ms>0</ms>
+            <ch1>98.9157</ch1>
+            <ch2>33.350</ch2>
+        </Log>
+        <Log id="105">
+            <Date>2021/07/01</Date>
+            <Time>15:45:00</Time>
+            <ms>0</ms>
+            <ch1>98.9104</ch1>
+            <ch2>33.757</ch2>
+        </Log>
+        <Log id="106">
+            <Date>2021/07/01</Date>
+            <Time>16:00:00</Time>
+            <ms>0</ms>
+            <ch1>98.9074</ch1>
+            <ch2>33.961</ch2>
+        </Log>
+        <Log id="107">
+            <Date>2021/07/01</Date>
+            <Time>16:15:00</Time>
+            <ms>0</ms>
+            <ch1>100.0086</ch1>
+            <ch2>34.055</ch2>
+        </Log>
+        <Log id="108">
+            <Date>2021/07/01</Date>
+            <Time>16:30:00</Time>
+            <ms>0</ms>
+            <ch1>100.0076</ch1>
+            <ch2>-93771.398</ch2>
+        </Log>
+        <Log id="109">
+            <Date>2021/07/01</Date>
+            <Time>16:45:00</Time>
+            <ms>0</ms>
+            <ch1>-606839.0000</ch1>
+            <ch2>-0.009</ch2>
+        </Log>
+        <Log id="110">
+            <Date>2021/07/01</Date>
+            <Time>17:00:00</Time>
+            <ms>0</ms>
+            <ch1>-541.2610</ch1>
+            <ch2>28235.600</ch2>
+        </Log>
+        <Log id="111">
+            <Date>2021/07/01</Date>
+            <Time>17:15:00</Time>
+            <ms>0</ms>
+            <ch1>0.0410</ch1>
+            <ch2>-675573.000</ch2>
+        </Log>
+        <Log id="112">
+            <Date>2021/07/01</Date>
+            <Time>17:30:00</Time>
+            <ms>0</ms>
+            <ch1>-27.9058</ch1>
+            <ch2>7411.090</ch2>
+        </Log>
+        <Log id="113">
+            <Date>2021/07/01</Date>
+            <Time>17:45:00</Time>
+            <ms>0</ms>
+            <ch1>-34.4575</ch1>
+            <ch2>-80664.602</ch2>
+        </Log>
+        <Log id="114">
+            <Date>2021/07/01</Date>
+            <Time>18:00:00</Time>
+            <ms>0</ms>
+            <ch1>-34455.6992</ch1>
+            <ch2>0.217</ch2>
+        </Log>
+        <Log id="115">
+            <Date>2021/07/01</Date>
+            <Time>18:15:00</Time>
+            <ms>0</ms>
+            <ch1>-0.4101</ch1>
+            <ch2>282.359</ch2>
+        </Log>
+        <Log id="116">
+            <Date>2021/07/01</Date>
+            <Time>18:30:00</Time>
+            <ms>0</ms>
+            <ch1>-4755.5498</ch1>
+            <ch2>0.020</ch2>
+        </Log>
+        <Log id="117">
+            <Date>2021/07/01</Date>
+            <Time>18:45:00</Time>
+            <ms>0</ms>
+            <ch1>0.4831</ch1>
+            <ch2>2.021</ch2>
+        </Log>
+        <Log id="118">
+            <Date>2021/07/01</Date>
+            <Time>19:00:00</Time>
+            <ms>0</ms>
+            <ch1>-0.8759</ch1>
+            <ch2>741.112</ch2>
+        </Log>
+        <Log id="119">
+            <Date>2021/07/01</Date>
+            <Time>19:15:00</Time>
+            <ms>0</ms>
+            <ch1>0.8102</ch1>
+            <ch2>21.683</ch2>
+        </Log>
+        <Log id="120">
+            <Date>2021/07/01</Date>
+            <Time>19:30:00</Time>
+            <ms>0</ms>
+            <ch1>416.8750</ch1>
+            <ch2>-1512.920</ch2>
+        </Log>
+        <Log id="121">
+            <Date>2021/07/01</Date>
+            <Time>19:45:00</Time>
+            <ms>0</ms>
+            <ch1>-0.0875</ch1>
+            <ch2>8.067</ch2>
+        </Log>
+        <Log id="122">
+            <Date>2021/07/01</Date>
+            <Time>20:00:00</Time>
+            <ms>0</ms>
+            <ch1>-0.2855</ch1>
+            <ch2>-9.377</ch2>
+        </Log>
+        <Log id="123">
+            <Date>2021/07/01</Date>
+            <Time>20:15:00</Time>
+            <ms>0</ms>
+            <ch1>-940792.0000</ch1>
+            <ch2>806653.000</ch2>
+        </Log>
+        <Log id="124">
+            <Date>2021/07/01</Date>
+            <Time>20:30:00</Time>
+            <ms>0</ms>
+            <ch1>4163.9097</ch1>
+            <ch2>-54451.000</ch2>
+        </Log>
+        <Log id="125">
+            <Date>2021/07/01</Date>
+            <Time>20:45:00</Time>
+            <ms>0</ms>
+            <ch1>-0.0744</ch1>
+            <ch2>0.009</ch2>
+        </Log>
+        <Log id="126">
+            <Date>2021/07/01</Date>
+            <Time>21:00:00</Time>
+            <ms>0</ms>
+            <ch1>743.7830</ch1>
+            <ch2>806656.000</ch2>
+        </Log>
+        <Log id="127">
+            <Date>2021/07/01</Date>
+            <Time>21:15:00</Time>
+            <ms>0</ms>
+            <ch1>0.0883</ch1>
+            <ch2>-4.134</ch2>
+        </Log>
+        <Log id="128">
+            <Date>2021/07/01</Date>
+            <Time>21:30:00</Time>
+            <ms>0</ms>
+            <ch1>22738.0000</ch1>
+            <ch2>-806657.000</ch2>
+        </Log>
+        <Log id="129">
+            <Date>2021/07/01</Date>
+            <Time>21:45:00</Time>
+            <ms>0</ms>
+            <ch1>0.2849</ch1>
+            <ch2>0.348</ch2>
+        </Log>
+        <Log id="130">
+            <Date>2021/07/01</Date>
+            <Time>22:00:00</Time>
+            <ms>0</ms>
+            <ch1>21941.5996</ch1>
+            <ch2>93773.000</ch2>
+        </Log>
+        <Log id="131">
+            <Date>2021/07/01</Date>
+            <Time>22:15:00</Time>
+            <ms>0</ms>
+            <ch1>0.6126</ch1>
+            <ch2>-80665.805</ch2>
+        </Log>
+        <Log id="132">
+            <Date>2021/07/01</Date>
+            <Time>22:30:00</Time>
+            <ms>0</ms>
+            <ch1>3.5039</ch1>
+            <ch2>-0.020</ch2>
+        </Log>
+        <Log id="133">
+            <Date>2021/07/01</Date>
+            <Time>22:45:00</Time>
+            <ms>0</ms>
+            <ch1>-4.1584</ch1>
+            <ch2>-67.558</ch2>
+        </Log>
+        <Log id="134">
+            <Date>2021/07/01</Date>
+            <Time>23:00:00</Time>
+            <ms>0</ms>
+            <ch1>-8.8056</ch1>
+            <ch2>-7411.210</ch2>
+        </Log>
+        <Log id="135">
+            <Date>2021/07/01</Date>
+            <Time>23:15:00</Time>
+            <ms>0</ms>
+            <ch1>-743323.0000</ch1>
+            <ch2>0.035</ch2>
+        </Log>
+        <Log id="136">
+            <Date>2021/07/01</Date>
+            <Time>23:30:00</Time>
+            <ms>0</ms>
+            <ch1>-100.5423</ch1>
+            <ch2>-15129.800</ch2>
+        </Log>
+        <Log id="137">
+            <Date>2021/07/01</Date>
+            <Time>23:45:00</Time>
+            <ms>0</ms>
+            <ch1>218910.0000</ch1>
+            <ch2>34790.699</ch2>
+        </Log>
+        <Log id="138">
+            <Date>2021/07/02</Date>
+            <Time>00:00:00</Time>
+            <ms>0</ms>
+            <ch1>-349.9080</ch1>
+            <ch2>-347906.000</ch2>
+        </Log>
+        <Log id="139">
+            <Date>2021/07/02</Date>
+            <Time>00:15:00</Time>
+            <ms>0</ms>
+            <ch1>-480912.0000</ch1>
+            <ch2>-675586.000</ch2>
+        </Log>
+        <Log id="140">
+            <Date>2021/07/02</Date>
+            <Time>00:30:00</Time>
+            <ms>0</ms>
+            <ch1>-0.0415</ch1>
+            <ch2>0.020</ch2>
+        </Log>
+        <Log id="141">
+            <Date>2021/07/02</Date>
+            <Time>00:45:00</Time>
+            <ms>0</ms>
+            <ch1>1005.0510</ch1>
+            <ch2>4134.430</ch2>
+        </Log>
+        <Log id="142">
+            <Date>2021/07/02</Date>
+            <Time>01:00:00</Time>
+            <ms>0</ms>
+            <ch1>-2.1839</ch1>
+            <ch2>67558.500</ch2>
+        </Log>
+        <Log id="143">
+            <Date>2021/07/02</Date>
+            <Time>01:15:00</Time>
+            <ms>0</ms>
+            <ch1>0.0415</ch1>
+            <ch2>20225.000</ch2>
+        </Log>
+        <Log id="144">
+            <Date>2021/07/02</Date>
+            <Time>01:30:00</Time>
+            <ms>0</ms>
+            <ch1>-0.3490</ch1>
+            <ch2>67.558</ch2>
+        </Log>
+        <Log id="145">
+            <Date>2021/07/02</Date>
+            <Time>01:45:00</Time>
+            <ms>0</ms>
+            <ch1>0.6114</ch1>
+            <ch2>100326.602</ch2>
+        </Log>
+        <Log id="146">
+            <Date>2021/07/02</Date>
+            <Time>02:00:00</Time>
+            <ms>0</ms>
+            <ch1>5460.0601</ch1>
+            <ch2>15129.900</ch2>
+        </Log>
+        <Log id="147">
+            <Date>2021/07/02</Date>
+            <Time>02:15:00</Time>
+            <ms>0</ms>
+            <ch1>-4148.2397</ch1>
+            <ch2>-87.219</ch2>
+        </Log>
+        <Log id="148">
+            <Date>2021/07/02</Date>
+            <Time>02:30:00</Time>
+            <ms>0</ms>
+            <ch1>21.7922</ch1>
+            <ch2>-937731.000</ch2>
+        </Log>
+        <Log id="149">
+            <Date>2021/07/02</Date>
+            <Time>02:45:00</Time>
+            <ms>0</ms>
+            <ch1>28.3244</ch1>
+            <ch2>-0.009</ch2>
+        </Log>
+        <Log id="150">
+            <Date>2021/07/02</Date>
+            <Time>03:00:00</Time>
+            <ms>0</ms>
+            <ch1>9383.8799</ch1>
+            <ch2>544515.000</ch2>
+        </Log>
+        <Log id="151">
+            <Date>2021/07/02</Date>
+            <Time>03:15:00</Time>
+            <ms>0</ms>
+            <ch1>-0.1580</ch1>
+            <ch2>0.938</ch2>
+        </Log>
+        <Log id="152">
+            <Date>2021/07/02</Date>
+            <Time>03:30:00</Time>
+            <ms>0</ms>
+            <ch1>-86.1860</ch1>
+            <ch2>-0.048</ch2>
+        </Log>
+        <Log id="153">
+            <Date>2021/07/02</Date>
+            <Time>03:45:00</Time>
+            <ms>0</ms>
+            <ch1>0.0283</ch1>
+            <ch2>-80666.000</ch2>
+        </Log>
+        <Log id="154">
+            <Date>2021/07/02</Date>
+            <Time>04:00:00</Time>
+            <ms>0</ms>
+            <ch1>1516.7400</ch1>
+            <ch2>937.732</ch2>
+        </Log>
+        <Log id="155">
+            <Date>2021/07/02</Date>
+            <Time>04:15:00</Time>
+            <ms>0</ms>
+            <ch1>-15.1612</ch1>
+            <ch2>100.327</ch2>
+        </Log>
+        <Log id="156">
+            <Date>2021/07/02</Date>
+            <Time>04:30:00</Time>
+            <ms>0</ms>
+            <ch1>-8438.5400</ch1>
+            <ch2>9.377</ch2>
+        </Log>
+        <Log id="157">
+            <Date>2021/07/02</Date>
+            <Time>04:45:00</Time>
+            <ms>0</ms>
+            <ch1>-708.6470</ch1>
+            <ch2>-0.676</ch2>
+        </Log>
+        <Log id="158">
+            <Date>2021/07/02</Date>
+            <Time>05:00:00</Time>
+            <ms>0</ms>
+            <ch1>-315.4520</ch1>
+            <ch2>-8066.590</ch2>
+        </Log>
+        <Log id="159">
+            <Date>2021/07/02</Date>
+            <Time>05:15:00</Time>
+            <ms>0</ms>
+            <ch1>-315.4220</ch1>
+            <ch2>-5.445</ch2>
+        </Log>
+        <Log id="160">
+            <Date>2021/07/02</Date>
+            <Time>05:30:00</Time>
+            <ms>0</ms>
+            <ch1>-2.4995</ch1>
+            <ch2>2022.600</ch2>
+        </Log>
+        <Log id="161">
+            <Date>2021/07/02</Date>
+            <Time>05:45:00</Time>
+            <ms>0</ms>
+            <ch1>3.1551</ch1>
+            <ch2>0.074</ch2>
+        </Log>
+        <Log id="162">
+            <Date>2021/07/02</Date>
+            <Time>06:00:00</Time>
+            <ms>0</ms>
+            <ch1>315.5060</ch1>
+            <ch2>-0.807</ch2>
+        </Log>
+        <Log id="163">
+            <Date>2021/07/02</Date>
+            <Time>06:15:00</Time>
+            <ms>0</ms>
+            <ch1>0.4138</ch1>
+            <ch2>216834.000</ch2>
+        </Log>
+        <Log id="164">
+            <Date>2021/07/02</Date>
+            <Time>06:30:00</Time>
+            <ms>0</ms>
+            <ch1>4857.1201</ch1>
+            <ch2>0.020</ch2>
+        </Log>
+        <Log id="165">
+            <Date>2021/07/02</Date>
+            <Time>06:45:00</Time>
+            <ms>0</ms>
+            <ch1>0.1593</ch1>
+            <ch2>-0.413</ch2>
+        </Log>
+        <Log id="166">
+            <Date>2021/07/02</Date>
+            <Time>07:00:00</Time>
+            <ms>0</ms>
+            <ch1>9384.6602</ch1>
+            <ch2>741122.000</ch2>
+        </Log>
+        <Log id="167">
+            <Date>2021/07/02</Date>
+            <Time>07:15:00</Time>
+            <ms>0</ms>
+            <ch1>0.0349</ch1>
+            <ch2>1003265.000</ch2>
+        </Log>
+        <Log id="168">
+            <Date>2021/07/02</Date>
+            <Time>07:30:00</Time>
+            <ms>0</ms>
+            <ch1>-21.0390</ch1>
+            <ch2>0.086</ch2>
+        </Log>
+        <Log id="169">
+            <Date>2021/07/02</Date>
+            <Time>07:45:00</Time>
+            <ms>0</ms>
+            <ch1>-47983.1016</ch1>
+            <ch2>741121.000</ch2>
+        </Log>
+        <Log id="170">
+            <Date>2021/07/02</Date>
+            <Time>08:00:00</Time>
+            <ms>0</ms>
+            <ch1>21115.0000</ch1>
+            <ch2>4.134</ch2>
+        </Log>
+        <Log id="171">
+            <Date>2021/07/02</Date>
+            <Time>08:15:00</Time>
+            <ms>0</ms>
+            <ch1>-0.0535</ch1>
+            <ch2>-0.858</ch2>
+        </Log>
+        <Log id="172">
+            <Date>2021/07/02</Date>
+            <Time>08:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.3596</ch1>
+            <ch2>15.135</ch2>
+        </Log>
+        <Log id="173">
+            <Date>2021/07/02</Date>
+            <Time>08:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.3823</ch1>
+            <ch2>15.299</ch2>
+        </Log>
+        <Log id="174">
+            <Date>2021/07/02</Date>
+            <Time>09:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.3942</ch1>
+            <ch2>16.045</ch2>
+        </Log>
+        <Log id="175">
+            <Date>2021/07/02</Date>
+            <Time>09:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.4086</ch1>
+            <ch2>16.349</ch2>
+        </Log>
+        <Log id="176">
+            <Date>2021/07/02</Date>
+            <Time>09:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.3954</ch1>
+            <ch2>18.306</ch2>
+        </Log>
+        <Log id="177">
+            <Date>2021/07/02</Date>
+            <Time>09:45:00</Time>
+            <ms>0</ms>
+            <ch1>99.4092</ch1>
+            <ch2>19.678</ch2>
+        </Log>
+        <Log id="178">
+            <Date>2021/07/02</Date>
+            <Time>10:00:00</Time>
+            <ms>0</ms>
+            <ch1>99.4192</ch1>
+            <ch2>19.646</ch2>
+        </Log>
+        <Log id="179">
+            <Date>2021/07/02</Date>
+            <Time>10:15:00</Time>
+            <ms>0</ms>
+            <ch1>99.4197</ch1>
+            <ch2>19.308</ch2>
+        </Log>
+        <Log id="180">
+            <Date>2021/07/02</Date>
+            <Time>10:30:00</Time>
+            <ms>0</ms>
+            <ch1>99.3530</ch1>
+            <ch2>27.257</ch2>
+        </Log>
+    </Data>
+</Body_xle>
