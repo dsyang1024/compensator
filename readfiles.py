@@ -44,18 +44,40 @@ def connect_files(station, dir, mode, filelist):
         file = os.path.join(dir, station, mode, filename)
         print(file)
         with open (file, 'r', encoding='cp949') as f:
-            # read csv and get info first
-            header = f.readlines()[:12]
-            elevunit = header[7].split(' ')[1].replace('\n','')
-            tempunit = header[10].split(' ')[1].replace('\n','')
-            tempunit = 'degC'
-            pd_header = header[-1].replace('\n','').split(',')
-            pd_header[-2] = pd_header[-2]+f' ({elevunit})'
-            pd_header[-1] = pd_header[-1]+f' ({tempunit})'
+            if 'Baro' in station:
+                # read csv and get info first
+                header = f.readlines()[:11]
+                elevunit = header[7].split(' ')[1].replace('\n','')
+                tempunit = header[9].split(' ')[1].replace('\n','')
+                tempunit = 'degC'
+                pd_header = header[-1].replace('\n','').split(',')
+                pd_header[-2] = pd_header[-2]+f' ({elevunit})'
+                pd_header[-1] = pd_header[-1]+f' ({tempunit})'
 
-            df = pd.read_csv(file, skiprows=12, names=pd_header, encoding='cp949', parse_dates=[['Date', 'Time']])
+                df = pd.read_csv(file, skiprows=12, names=pd_header, encoding='cp949')
+            else:
+                # read csv and get info first
+                header = f.readlines()[:12]
+                elevunit = header[7].split(' ')[1].replace('\n','')
+                tempunit = header[10].split(' ')[1].replace('\n','')
+                tempunit = 'degC'
+                pd_header = header[-1].replace('\n','').split(',')
+                pd_header[-2] = pd_header[-2]+f' ({elevunit})'
+                pd_header[-1] = pd_header[-1]+f' ({tempunit})'
+
+                df = pd.read_csv(file, skiprows=12, names=pd_header, encoding='cp949')
             # if na value in the row, in the file, drop it
             df = df.dropna().reset_index(drop=True)
+            # make Date column to datetime format: yyyy/mm/dd or mm/dd/yyyy format
+            df['Date_P'] = pd.to_datetime(df['Date'], errors='raise')
+            # if time column is in 12hr format, convert it to 24hr format
+            if df['Time'].str.contains('am|pm|AM|PM').any():
+                df['Time_P'] = pd.to_datetime(df['Time'], format='%I:%M:%S %p', errors='raise').dt.time
+            else:
+                df['Time_P'] = pd.to_datetime(df['Time'], format='%H:%M:%S', errors='raise').dt.time
+            # merge Date and Time column to Date_Time column in yyyy-mm-dd 24hr format
+            df['Date_Time'] = pd.to_datetime(df['Date_P'].astype(str) + ' ' + df['Time_P'].astype(str), errors='raise')            
+
             # ! check the data is in the correct format, if not, try to parse it again
             # if 'Date_Time' column is object, not datetime62[ns] format, try to parse it again
             if df['Date_Time'].dtype == 'object':
@@ -70,18 +92,19 @@ def connect_files(station, dir, mode, filelist):
             # remove first and last rows for the data quality check
             df = df.iloc[1:-1,:].reset_index(drop=True)
             
-            # ! check if the level unit is cm, convert it to m
-            # ! change the column name to 'LEVEL (m)' if it is cm
-            if elevunit == 'cm':
-                df[pd_header[-2]] = df[pd_header[-2]] / 100
-                df.rename(columns={pd_header[-2]: 'LEVEL (m)'}, inplace=True)
-            
-            # ! simple filtering 1
-            # if the water level is less than 0 and more than 100 m, drop the row
-            df = df[(df['LEVEL (m)'] >= 0) & (df['LEVEL (m)'] <= 20)].reset_index(drop=True)
-            # ! simple filtering 2
-            # if the temperature is less than -20 and more than 50 °C, drop the row
-            df = df[(df['TEMPERATURE (degC)'] >= -20) & (df['TEMPERATURE (degC)'] <= 50)].reset_index(drop=True)
+            if 'Baro' not in station:
+                # ! check if the level unit is cm, convert it to m
+                # ! change the column name to 'LEVEL (m)' if it is cm
+                if elevunit == 'cm':
+                    df[pd_header[-2]] = df[pd_header[-2]] / 100
+                    df.rename(columns={pd_header[-2]: 'LEVEL (m)'}, inplace=True)
+                
+                # ! simple filtering 1
+                # if the water level is less than -10 and more than 20 m, drop the row
+                df = df[(df['LEVEL (m)'] >= -10) & (df['LEVEL (m)'] <= 20)].reset_index(drop=True)
+                # ! simple filtering 2
+                # if the temperature is less than -20 and more than 50 °C, drop the row
+                df = df[(df['TEMPERATURE (degC)'] >= -20) & (df['TEMPERATURE (degC)'] <= 50)].reset_index(drop=True)
 
 
             if filename == filelist[0]:
@@ -90,7 +113,7 @@ def connect_files(station, dir, mode, filelist):
             else:
                 # ! check the first data has interval less than 2 hours from previous data
                 time_diff = (df['Date_Time'].iloc[0] - maindf['Date_Time'].iloc[-1]).total_seconds()
-                if (time_diff < 7200):
+                if (time_diff < 7200) and 'Baro' not in station:
                     # ! if the level of the first data is more than 0.05 m  (5 cm)different from the last data, substract the difference
                     # ! from the all data of the file to be connected
                     if abs(df['LEVEL (m)'].iloc[0] - maindf['LEVEL (m)'].iloc[-1]) > 0.1:
